@@ -10,5 +10,12 @@
   "upload_source_maps": true,
   "assets": {
     "not_found_handling": "single-page-application"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "app_club_db",
+      "database_id": "b45e780d-5ecb-441c-b5b9-e25792f61177",
+    }
+  ],
 }
