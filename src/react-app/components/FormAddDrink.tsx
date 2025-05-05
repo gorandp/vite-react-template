@@ -1,8 +1,15 @@
 import React from 'react';
 
 
-export default class FormAddDrink extends React.Component {
-    constructor(props) {
+interface Props {}
+interface State {
+    drinkName: string;
+    drinkPrice: string;
+}
+
+
+export default class FormAddDrink extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             drinkName: "",
@@ -43,7 +50,7 @@ export default class FormAddDrink extends React.Component {
             })
         })
         .then((res) => res.json() as Promise<{ name: string }>)
-        .then((data) => {
+        .then((data: any) => {
             console.log(data);
             if (data.error) {
                 alert(data.errorEs);

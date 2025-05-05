@@ -1,7 +1,11 @@
 import React from "react";
 
-export default class Title extends React.Component {
-    constructor(props: { content: string }) {
+interface Props {
+    content: string;
+}
+
+export default class Title extends React.Component<Props> {
+    constructor(props: Props) {
         super(props);
     };
 

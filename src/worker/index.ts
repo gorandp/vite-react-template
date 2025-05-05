@@ -1,8 +1,9 @@
-import { Hono, Context, Next } from "hono";
+import { Hono } from "hono";
+// import { Context, Next } from "hono";
 import { cors } from "hono/cors";
-import { drizzle } from 'drizzle-orm/d1';
-import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core';
-import { sql } from 'drizzle-orm';
+// import { drizzle } from 'drizzle-orm/d1';
+// import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core';
+// import { sql } from 'drizzle-orm';
 // import { handleRest } from './rest';
 import { usersRoute } from "./users";
 import { drinksRoute } from "./drinks";

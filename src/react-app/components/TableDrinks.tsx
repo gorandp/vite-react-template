@@ -6,12 +6,17 @@ type Drink = {
     price: number;
 }
 
-export default class TableDrinks extends React.Component {
-    constructor(props) {
+interface Props {}
+interface State {
+    drinks: Drink[] | null;
+}
+
+export default class TableDrinks extends React.Component<{}, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             drinks: null,
-        }
+        };
     }
 
     componentDidMount() {
