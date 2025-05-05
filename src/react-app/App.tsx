@@ -1,7 +1,6 @@
 // src/App.tsx
 
 import { useState } from "react";
-import favicon from "./assets/favicon.ico";
 import logoTehuelches from "./assets/logo_tehuelches_transparent_background.png";
 import "./App.css";
 import Title from "./components/Title";
@@ -12,7 +11,8 @@ import TableDrinks from "./components/TableDrinks";
 function App() {
   const [count, setCount] = useState(0);
   const [name, setName] = useState("unknown");
-  const [title, setTitle] = useState("Tehuelches SN - Ventas");
+//   const [title, setTitle] = useState("Tehuelches SN - Ventas");
+  const title = "Tehuelches SN - Ventas";
 
   return (
     <>
