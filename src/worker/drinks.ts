@@ -70,7 +70,7 @@ export const drinksRoute = new Hono<{ Bindings: Env }>()
         // console.log(data)
         return c.json({dropRes, createRes, data});
     })
-    .post("/update/:id", async (c) => {
+    .post("/update/:id{[0-9]+}", async (c) => {
         const drinkId = Number(c.req.param("id"));
         const { name, price } = await c.req.json();
         if (!name) {
@@ -103,7 +103,7 @@ export const drinksRoute = new Hono<{ Bindings: Env }>()
             .returning().get();
         return c.json(newDrink);
     })
-    .post("/delete/:id", async (c) => {
+    .post("/delete/:id{[0-9]+}", async (c) => {
         const drinkId = Number(c.req.param("id"));
         const db = drizzle(c.env.DB);
         // check if drink already exists
@@ -120,7 +120,7 @@ export const drinksRoute = new Hono<{ Bindings: Env }>()
             .returning().get();
         return c.json(deletedDrink);
     })
-    .get("/:id", async (c) => {
+    .get("/:id{[0-9]+}", async (c) => {
         //validate it is a number
         if (isNaN(Number(c.req.param("id")))) {
             return c.json({ error: "Invalid drink id" }, 400);
