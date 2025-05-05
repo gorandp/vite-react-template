@@ -45,18 +45,20 @@ export default class FormAddDrink extends React.Component {
         .then((res) => res.json() as Promise<{ name: string }>)
         .then((data) => {
             console.log(data);
+            if (data.error) {
+                alert(data.errorEs);
+                return;
+            }
             this.setState({
                 drinkName: "",
                 drinkPrice: "",
             });
+            // Reload the page
+            window.location.reload();
         })
         .catch((error) => {
             console.error("Error:", error);
-        }).finally(() => {
-            // Reload the page
-            window.location.reload();
         });
-
     }
 
     render(): React.ReactNode {

@@ -22,7 +22,9 @@ export const drinksRoute = new Hono<{ Bindings: Env }>()
     .post("/add", async (c) => {
         const { name, price } = await c.req.json();
         if (!name) {
-            return c.json({ error: "Name is required" }, 400);
+            return c.json(
+                { error: "Name is required",
+                  errorEs: "El nombre es requerido" }, 400);
         }
         const db = drizzle(c.env.DB);
         // check if drink already exists
@@ -31,7 +33,9 @@ export const drinksRoute = new Hono<{ Bindings: Env }>()
             .where(eq(drinksTable.name, name));
         if (existingDrink.length > 0) {
             // drink already exists
-            return c.json({ error: "Drink already exists" }, 400);
+            return c.json(
+                { error: "Drink already exists",
+                  errorEs: "La bebida ya existe" }, 400);
         }
         // create drink
         const drink = {
@@ -74,7 +78,9 @@ export const drinksRoute = new Hono<{ Bindings: Env }>()
         const drinkId = Number(c.req.param("id"));
         const { name, price } = await c.req.json();
         if (!name) {
-            return c.json({ error: "Name is required" }, 400);
+            return c.json(
+                { error: "Name is required",
+                  errorEs: "El nombre es requerido" }, 400);
         }
         const db = drizzle(c.env.DB);
         // check if drink already exists
@@ -83,14 +89,19 @@ export const drinksRoute = new Hono<{ Bindings: Env }>()
             .where(eq(drinksTable.id, drinkId));
         if (existingDrink.length === 0) {
             // drink doesn't exist
-            return c.json({ error: "Drink does not exist" }, 400);
+            return c.json(
+                { error: "Drink does not exist",
+                  errorEs: "La bebida no existe" }, 400);
         }
         const existingDrinkName = await db.select()
             .from(drinksTable)
             .where(eq(drinksTable.name, name));
         if (existingDrinkName.length > 0 && existingDrinkName[0].id !== drinkId) {
             // drink already exists
-            return c.json({ error: "Drink name already exists to other drink object" }, 400);
+            return c.json(
+                { error: "Drink name already used by other drink",
+                  errorEs: "El nombre de la bebida ya está en uso por otra bebida"
+                  }, 400);
         }
         // update drink
         const drink = {
@@ -112,7 +123,10 @@ export const drinksRoute = new Hono<{ Bindings: Env }>()
             .where(eq(drinksTable.id, drinkId));
         if (existingDrink.length === 0) {
             // drink doesn't exist
-            return c.json({ error: "Drink does not exist" }, 400);
+            return c.json(
+                { error: "Drink does not exist",
+                  errorEs: "La bebida no existe"
+                }, 400);
         }
         // delete drink
         const deletedDrink = await db.delete(drinksTable)
@@ -123,7 +137,10 @@ export const drinksRoute = new Hono<{ Bindings: Env }>()
     .get("/:id{[0-9]+}", async (c) => {
         //validate it is a number
         if (isNaN(Number(c.req.param("id")))) {
-            return c.json({ error: "Invalid drink id" }, 400);
+            return c.json(
+                { error: "Invalid drink id",
+                  errorEs: "ID de bebida inválido"
+                 }, 400);
         }
         const drinkId = Number(c.req.param("id"));
         const db = drizzle(c.env.DB);
@@ -133,7 +150,10 @@ export const drinksRoute = new Hono<{ Bindings: Env }>()
             .where(eq(drinksTable.id, drinkId));
         if (existingDrink.length === 0) {
             // drink doesn't exist
-            return c.json({ error: "Drink does not exist" }, 400);
+            return c.json(
+                { error: "Drink does not exist",
+                  errorEs: "La bebida no existe"
+                }, 400);
         }
         return c.json(existingDrink[0]);
     });
