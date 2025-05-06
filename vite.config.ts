@@ -22,4 +22,9 @@ export default defineConfig({
       "@": path.resolve(import.meta.dirname, "./src/react-app"),
     },
   },
+  server: {
+    watch: {
+      ignored: ['./.wrangler/**'],
+    },
+  }
 });
