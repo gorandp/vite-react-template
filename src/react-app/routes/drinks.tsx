@@ -15,7 +15,7 @@ function RouteComponent() {
 
   return (
     <>
-      <div className="main">
+      <div className="flex flex-col items-center justify-center bg-gray-100 m-0 p-0">
 
         <FormAddDrink />
         <TableDrinks />
