@@ -1,3 +1,8 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
 .main {
     font-family: Arial, sans-serif;
     display: flex;
@@ -54,10 +59,6 @@ header {
 .nav-btn {
     list-style-type: none;
     padding: 10px;
-    /* border: 1px solid #ffffff; */
-}
-
-.nav-btn a {
     color: #ffffff;
     background-color: #de5a10;
     padding: 15px;
@@ -68,14 +69,14 @@ header {
     margin-bottom: auto;
 }
 
-.nav-btn a:hover {
+.nav-btn:hover {
     background-color: white;
     color: #3b3f44;
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
-.nav-btn.selected a {
+.nav-btn.selected {
     background-color: #ffffff;
     color: #3b3f44;
 }
@@ -167,19 +168,6 @@ th {
     color: white;
 }
 
-.error-message {
-    color: white;
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-top: 10px;
-    width: 100%;
-    max-width: 600px;
-    background-color: rgba(204, 69, 69, 0.7);
-    border-radius: 1%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
 
 @media screen and (max-width: 600px) {
     body {
