@@ -11,7 +11,7 @@ interface State {
     drinks: Drink[] | null;
 }
 
-export default class TableDrinks extends React.Component<{}, State> {
+export default class TableDrinks extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
