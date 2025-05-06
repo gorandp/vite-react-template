@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from '@tanstack/react-router';
 
-import Title from "../components/Title";
 import FormAddDrink from "../components/FormAddDrink";
 import TableDrinks from "../components/TableDrinks";
 
@@ -13,13 +12,9 @@ function RouteComponent() {
   const [count, setCount] = useState(0);
   const [name, setName] = useState("unknown");
   //   const [title, setTitle] = useState("Tehuelches SN - Ventas");
-  const title = "Tehuelches SN - Ventas";
 
   return (
     <>
-      <head>
-        <Title content={title} />
-      </head>
       <div className="main">
 
         <FormAddDrink />
@@ -80,7 +75,7 @@ function RouteComponent() {
             Edit <code>worker/index.ts</code> to change the name
           </p>
         </div>
-        <p className="read-the-docs">Click on the logos to learn more</p>
+        <p className="read-the-docs text-3xl font-bold underline">Click on the logos to learn more</p>
       </div>
     </>
   )
