@@ -15,11 +15,17 @@ function RouteComponent() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center bg-gray-100 m-0 p-0">
+      <div className="flex flex-col items-center justify-center m-0 p-0">
 
-        <FormAddDrink />
-        <TableDrinks />
+        <section className="max-w-160 w-9/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
+          <h2>Registrar Bebida</h2>
+          <FormAddDrink />
+        </section>
 
+        <section className="max-w-160 w-9/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
+          <h2>Bebidas</h2>
+          <TableDrinks />
+        </section>
 
         <div className="card">
           <button

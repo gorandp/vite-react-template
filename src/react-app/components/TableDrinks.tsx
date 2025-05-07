@@ -66,32 +66,29 @@ export default class TableDrinks extends React.Component<Props, State> {
             );
         }
         return (
-            <section className="table-section">
-                <h2>Bebidas</h2>
-                <table id="salesTable">
-                    <thead>
-                        <tr>
-                            <th>Bebida</th>
-                            <th>Precio unitario</th>
-                            <th>Acciones</th>
+            <table id="salesTable">
+                <thead>
+                    <tr>
+                        <th>Bebida</th>
+                        <th>Precio unitario</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {this.state.drinks.map((drink: Drink) => (
+                        <tr key={drink.id}>
+                            <td>{drink.name}</td>
+                            <td>{drink.price}</td>
+                            <td>
+                                <button className="update-btn" type="submit">Actualizar</button>
+                                <form onSubmit={(event) => this.deleteDrink(event, drink.id)} method="post">
+                                    <button className="delete-btn" type="submit" >Eliminar</button>
+                                </form>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.drinks.map((drink: Drink) => (
-                            <tr key={drink.id}>
-                                <td>{drink.name}</td>
-                                <td>{drink.price}</td>
-                                <td>
-                                    <button className="update-btn" type="submit">Actualizar</button>
-                                    <form onSubmit={(event) => this.deleteDrink(event, drink.id)} method="post">
-                                        <button className="delete-btn" type="submit" >Eliminar</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </section>
+                    ))}
+                </tbody>
+            </table>
         );
     }
 }

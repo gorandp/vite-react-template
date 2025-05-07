@@ -74,33 +74,30 @@ export default class FormAddDrink extends React.Component<Props, State> {
         // }
 
         return (
-            <section className="form-section max-w-160 w-9/12 my-5 mx-0 bg-white p-4 rounded-lg shadow-md">
-                <h2>Registrar Bebida</h2>
+            <form id="salesForm" className='flex flex-col gap-5' onSubmit={this.handleOnSubmit}>
                 {/* Send form to a function */}
-                <form id="salesForm" className='flex flex-col gap-5' onSubmit={this.handleOnSubmit}>
-                    <label>Bebida:
-                        <input
-                            type="text"
-                            name="drink"
-                            id="drink"
-                            onChange={this.handleOnChange}
-                            value={this.state.drinkName}
-                            required />
-                    </label>
-                    <label>Precio unitario:
-                        <input
-                            type="number"
-                            id="price"
-                            name="price"
-                            step="0.01"
-                            min="0"
-                            onChange={this.handleOnChange}
-                            value={this.state.drinkPrice}
-                            required />
-                    </label>
-                    <Button type='submit'>Agregar Bebida</Button>
-                </form>
-            </section>
+                <label>Bebida:
+                    <input
+                        type="text"
+                        name="drink"
+                        id="drink"
+                        onChange={this.handleOnChange}
+                        value={this.state.drinkName}
+                        required />
+                </label>
+                <label>Precio unitario:
+                    <input
+                        type="number"
+                        id="price"
+                        name="price"
+                        step="0.01"
+                        min="0"
+                        onChange={this.handleOnChange}
+                        value={this.state.drinkPrice}
+                        required />
+                </label>
+                <Button type='submit'>Agregar Bebida</Button>
+            </form>
         )
     }
 }

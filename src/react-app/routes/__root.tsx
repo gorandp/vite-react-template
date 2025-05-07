@@ -18,7 +18,7 @@ export const Route = createRootRoute({
             <header className='
                     flex justify-between 
                     items-center bg-neutral-700
-                    py-7 xl:px-40 md:px-17 sm:px-10
+                    mb-5 py-7 xl:px-40 md:px-17 sm:px-10
                     text-white'>
                 <div className="flex items-center mr-auto gap-7">
                     <img className="h-15" src={logoTehuelches} alt="Logo" />
