@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { createFileRoute } from '@tanstack/react-router';
 
-import FormAddDrink from "../components/FormAddDrink";
 import TableDrinks from "../components/TableDrinks";
+import { FormAddDrink } from "../components/FormAddDrink";
 
 export const Route = createFileRoute('/drinks')({
   component: RouteComponent,
@@ -18,7 +18,6 @@ function RouteComponent() {
       <div className="flex flex-col items-center justify-center m-0 p-0">
 
         <section className="max-w-160 w-9/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
-          <h2>Registrar Bebida</h2>
           <FormAddDrink />
         </section>
 

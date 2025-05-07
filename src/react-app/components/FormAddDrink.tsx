@@ -1,54 +1,55 @@
-import React from 'react';
-import { Button } from "@/components/ui/button";
+import { createFormHook, createFormHookContexts } from '@tanstack/react-form'
+// Form components that pre-bind events from the form hook; check our "Form Composition" guide for more
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+// We also support Valibot, ArkType, and any other standard schema library
+import { z } from 'zod'
 
+const { fieldContext, formContext } = createFormHookContexts()
 
-interface Props {}
-interface State {
-    drinkName: string;
-    drinkPrice: string;
+// Allow us to bind components to the form to keep type safety but reduce production boilerplate
+// Define this once to have a generator of consistent form instances throughout your app
+const { useAppForm } = createFormHook({
+    fieldComponents: {
+        Input,
+    },
+    formComponents: {
+        Button,
+    },
+    fieldContext,
+    formContext,
+})
+
+interface DrinkInput {
+    drink: string
+    price: number
+}
+const defaultDrinkInput: DrinkInput = {
+    drink: '',
+    price: 0,
 }
 
-
-export default class FormAddDrink extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            drinkName: "",
-            drinkPrice: "",
-        }
-        this.handleOnChange = this.handleOnChange.bind(this);
-        this.handleOnSubmit = this.handleOnSubmit.bind(this);
-    }
-
-    handleOnChange(event: any) {
-        // Handle the change event
-        if (event.target.id === "drink") {
-            this.setState({
-                drinkName: event.target.value
-            });
-        } else if (event.target.id === "price") {
-            // check if the value is a number
-            this.setState({
-                drinkPrice: event.target.value
-            });
-        }
-    }
-
-    handleOnSubmit(event: any) {
-        event.preventDefault();
-
-        // Handle the submit event
-        const formData = new FormData(event.target);
-        const data = Object.fromEntries(formData.entries());
+export const FormAddDrink = () => {
+    const form = useAppForm({
+      defaultValues: defaultDrinkInput,
+      validators: {
+        // Pass a schema or function to validate
+        onChange: z.object({
+          drink: z.string(),
+          price: z.number(),
+        }),
+      },
+      onSubmit: ({value}) => {
+        // alert(JSON.stringify(value, null, 2))
         fetch("/api/drinks/add", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: data.drink,
-                price: data.price
-            })
+              name: value.drink,
+              price: value.price,
+            }),
         })
         .then((res) => res.json() as Promise<{ name: string }>)
         .then((data: any) => {
@@ -57,47 +58,61 @@ export default class FormAddDrink extends React.Component<Props, State> {
                 alert(data.errorEs);
                 return;
             }
-            this.setState({
-                drinkName: "",
-                drinkPrice: "",
-            });
             // Reload the page
             window.location.reload();
         })
         .catch((error) => {
             console.error("Error:", error);
         });
-    }
+      },
+    })
 
-    render(): React.ReactNode {
-        // if (this.props.formType === "addDrink") {
-        // }
-
-        return (
-            <form id="salesForm" className='flex flex-col gap-5' onSubmit={this.handleOnSubmit}>
-                {/* Send form to a function */}
-                <label>Bebida:
-                    <input
-                        type="text"
-                        name="drink"
-                        id="drink"
-                        onChange={this.handleOnChange}
-                        value={this.state.drinkName}
-                        required />
-                </label>
-                <label>Precio unitario:
-                    <input
-                        type="number"
-                        id="price"
-                        name="price"
-                        step="0.01"
-                        min="0"
-                        onChange={this.handleOnChange}
-                        value={this.state.drinkPrice}
-                        required />
-                </label>
-                <Button type='submit'>Agregar Bebida</Button>
-            </form>
-        )
-    }
+    return (
+        <form
+          onSubmit={(e) => {
+              e.preventDefault()
+              form.handleSubmit()
+          }}
+        >
+          <h1 className='mb-5 text-xl'>Registrar Bebida</h1>
+          {/* Components are bound to `form` and `field` to ensure extreme type safety */}
+          {/* Use `form.AppField` to render a component bound to a single field */}
+          <form.AppField
+            name="drink"
+            children={(field) => 
+              <label>Nombre: 
+                <field.Input
+                  className='mb-5'
+                  type="text"
+                  name="drink"
+                  id="drink"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  required />
+              </label>
+            }
+          />
+          {/* The "name" property will throw a TypeScript error if typo'd  */}
+          <form.AppField
+            name="price"
+            children={(field) =>
+              <label>Precio unitario: 
+                <field.Input
+                  className='mb-5'
+                  type="number"
+                  step="100"
+                  min="0"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(Number(e.target.value))}
+                  required />
+              </label>}
+          />
+          {/* Components in `form.AppForm` have access to the form context */}
+          <form.AppForm>
+            <form.Button className='mt-2'>Agregar Bebida</form.Button>
+          </form.AppForm>
+        </form>
+    )
 }
