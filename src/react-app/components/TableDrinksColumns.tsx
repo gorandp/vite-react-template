@@ -33,6 +33,7 @@ export const columnsDrinks: ColumnDef<Drink>[] = [
     id: "actions",
     cell: ({ row }) => {
       const drinkData = row.original
+      console.log(drinkData)
 
       return (
         <div className="flex justify-end gap-2">
