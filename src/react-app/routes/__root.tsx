@@ -18,11 +18,11 @@ export const Route = createRootRoute({
             <header className='
                     flex justify-between 
                     items-center bg-neutral-700
-                    mb-5 py-7 xl:px-40 md:px-17 sm:px-10
+                    mb-5 py-7 xl:px-40 md:px-17 sm:px-10 px-5
                     text-white'>
                 <div className="flex items-center mr-auto gap-7">
                     <img className="h-15" src={logoTehuelches} alt="Logo" />
-                    <h1 className='text-3xl font-rubik-dirt'>Tehuelches SN</h1>
+                    <h1 className='font-rubik-dirt md:text-3xl sm:text-2xl text-xl'>Tehuelches SN</h1>
                 </div>
                 <div className="mr-0 ml-auto flex gap-3">
                     <Link to="/" className={navButtonsClasses}>
