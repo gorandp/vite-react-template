@@ -74,7 +74,12 @@ export const FormAddDrink = () => {
               form.handleSubmit()
           }}
         >
-          <h1 className='mb-5 text-xl'>Registrar Bebida</h1>
+          {/* <h1 className='mb-5 text-2xl font-headers decoration-dotted decoration-orange-500 underline decoration-3'>Registrar Bebida</h1> */}
+          <h1 className='mb-5 text-2xl font-roboto'>
+            <span className='text-orange-500 font-extrabold'>&gt;</span>
+          &nbsp;&nbsp;Registrar Bebida&nbsp;&nbsp;
+            <span className='text-orange-500 font-extrabold'>&lt;</span>
+          </h1>
           {/* Components are bound to `form` and `field` to ensure extreme type safety */}
           {/* Use `form.AppField` to render a component bound to a single field */}
           <form.AppField
