@@ -1,9 +1,9 @@
-import { createFormHook, createFormHookContexts } from '@tanstack/react-form'
+import { createFormHook, createFormHookContexts } from "@tanstack/react-form"
 // Form components that pre-bind events from the form hook; check our "Form Composition" guide for more
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 // We also support Valibot, ArkType, and any other standard schema library
-import { z } from 'zod'
+import { z } from "zod"
 
 const { fieldContext, formContext } = createFormHookContexts()
 
@@ -25,7 +25,7 @@ interface DrinkInput {
     price: number
 }
 const defaultDrinkInput: DrinkInput = {
-    drink: '',
+    drink: "",
     price: 0,
 }
 
@@ -74,11 +74,11 @@ export const FormAddDrink = () => {
               form.handleSubmit()
           }}
         >
-          {/* <h1 className='mb-5 text-2xl font-headers decoration-dotted decoration-orange-500 underline decoration-3'>Registrar Bebida</h1> */}
-          <h1 className='mb-5 text-2xl font-roboto'>
-            <span className='text-orange-500 font-extrabold'>&gt;</span>
+          {/* <h1 className="mb-5 text-2xl font-headers decoration-dotted decoration-orange-500 underline decoration-3">Registrar Bebida</h1> */}
+          <h1 className="mb-5 text-2xl font-roboto">
+            <span className="text-orange-500 font-extrabold">&gt;</span>
           &nbsp;&nbsp;Registrar Bebida&nbsp;&nbsp;
-            <span className='text-orange-500 font-extrabold'>&lt;</span>
+            <span className="text-orange-500 font-extrabold">&lt;</span>
           </h1>
           {/* Components are bound to `form` and `field` to ensure extreme type safety */}
           {/* Use `form.AppField` to render a component bound to a single field */}
@@ -87,7 +87,7 @@ export const FormAddDrink = () => {
             children={(field) => 
               <label>Nombre: 
                 <field.Input
-                  className='mb-5'
+                  className="mb-5"
                   type="text"
                   name="drink"
                   id="drink"
@@ -98,13 +98,13 @@ export const FormAddDrink = () => {
               </label>
             }
           />
-          {/* The "name" property will throw a TypeScript error if typo'd  */}
+          {/* The "name" property will throw a TypeScript error if typo"d  */}
           <form.AppField
             name="price"
             children={(field) =>
               <label>Precio unitario: 
                 <field.Input
-                  className='mb-5'
+                  className="mb-5"
                   type="number"
                   step="100"
                   min="0"
@@ -116,7 +116,7 @@ export const FormAddDrink = () => {
           />
           {/* Components in `form.AppForm` have access to the form context */}
           <form.AppForm>
-            <form.Button className='mt-2'>Agregar Bebida</form.Button>
+            <form.Button className="mt-2">Agregar Bebida</form.Button>
           </form.AppForm>
         </form>
     )
