@@ -27,9 +27,9 @@ function RouteComponent() {
           <TableDrinks />
         </section>
 
-        {/* <section className="max-w-160 w-9/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
+        <section className="max-w-160 w-9/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
           <TableDrinksNew />
-        </section> */}
+        </section>
 
         <div className="card">
           <button

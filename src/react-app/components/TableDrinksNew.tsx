@@ -17,9 +17,6 @@ export class TableDrinksNew extends React.Component<{}, TableDrinksNewState> {
   componentDidMount() {
     this.fetchDrinks();
   }
-  componentDidUpdate() {
-    this.fetchDrinks();
-  }
   fetchDrinks() {
     fetch("/api/drinks")
       .then((res) => res.json())
