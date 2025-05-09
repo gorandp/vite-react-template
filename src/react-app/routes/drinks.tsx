@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { createFileRoute } from '@tanstack/react-router';
 
 // import TableDrinks from "../components/TableDrinks";
@@ -10,8 +10,8 @@ export const Route = createFileRoute('/drinks')({
 })
 
 function RouteComponent() {
-  const [count, setCount] = useState(0);
-  const [name, setName] = useState("unknown");
+  // const [count, setCount] = useState(0);
+  // const [name, setName] = useState("unknown");
   //   const [title, setTitle] = useState("Tehuelches SN - Ventas");
 
   return (
@@ -30,7 +30,7 @@ function RouteComponent() {
         <section className="max-w-160 w-9/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
           <TableDrinksNew />
         </section>
-
+        {/* 
         <div className="card">
           <button
             onClick={() => setCount((count) => count + 1)}
@@ -85,7 +85,7 @@ function RouteComponent() {
             Edit <code>worker/index.ts</code> to change the name
           </p>
         </div>
-        <p className="read-the-docs text-3xl font-bold underline">Click on the logos to learn more</p>
+        <p className="read-the-docs text-3xl font-bold underline">Click on the logos to learn more</p> */}
       </div>
     </>
   )
