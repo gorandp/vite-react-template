@@ -72,11 +72,11 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))
           ) : loading ? (
-            Array.from({ length: 5 }, (_, index) => (
+            Array.from({ length: 3 }, (_, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id}>
-                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-8 w-full" />
                   </TableCell>
                 ))}
               </TableRow>
