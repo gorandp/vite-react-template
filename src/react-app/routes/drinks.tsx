@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from '@tanstack/react-router';
 
-import TableDrinks from "../components/TableDrinks";
+// import TableDrinks from "../components/TableDrinks";
 import { FormAddDrink } from "../components/FormAddDrink";
 import { TableDrinksNew } from "@/components/TableDrinksNew";
 
@@ -22,10 +22,10 @@ function RouteComponent() {
           <FormAddDrink />
         </section>
 
-        <section className="max-w-160 w-9/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
+        {/* <section className="max-w-160 w-9/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
           <h2>Bebidas</h2>
           <TableDrinks />
-        </section>
+        </section> */}
 
         <section className="max-w-160 w-9/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
           <TableDrinksNew />

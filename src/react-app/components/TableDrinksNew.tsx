@@ -1,5 +1,5 @@
 import { DataTable } from "@/components/DataTable";
-import { Drink, columnsDrinks } from "@/components/TableDrinksColumns";
+import { Drink, getColumnsDrinks } from "@/components/TableDrinksColumns";
 import React from "react";
 
 
@@ -13,6 +13,7 @@ export class TableDrinksNew extends React.Component<{}, TableDrinksNewState> {
     this.state = {
       drinks: [],
     };
+    this.fetchDrinks = this.fetchDrinks.bind(this);
   }
   componentDidMount() {
     this.fetchDrinks();
@@ -25,6 +26,7 @@ export class TableDrinksNew extends React.Component<{}, TableDrinksNewState> {
       });
   }
   render() {
+    const columns = getColumnsDrinks(this.fetchDrinks);
     return (
       <div>
         <h1 className='mb-5 text-2xl font-roboto'>
@@ -33,7 +35,7 @@ export class TableDrinksNew extends React.Component<{}, TableDrinksNewState> {
           <span className='text-orange-500 font-extrabold'>&lt;</span>
         </h1>
         <DataTable
-          columns={columnsDrinks}
+          columns={columns}
           data={this.state.drinks}
           emptyTableMsg="No hay bebidas registradas."
         />

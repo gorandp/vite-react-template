@@ -8,10 +8,25 @@ export type Drink = {
   price: number;
 }
 
+// Modified to accept a callback
+function deleteDrink(event: any, id: number, onDeleteSuccess: () => void) {
+  event.preventDefault();
+  fetch(`/api/drinks/delete/${id}`, {
+    method: "POST",
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      onDeleteSuccess(); // Call the callback on success
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
 
 /* Column definitions for the table */
-
-export const columnsDrinks: ColumnDef<Drink>[] = [
+// Changed to a function that accepts a callback
+export const getColumnsDrinks = (onDeleteSuccessCallback: () => void): ColumnDef<Drink>[] => [
   {
     accessorKey: "name",
     header: "Nombre",
@@ -33,7 +48,6 @@ export const columnsDrinks: ColumnDef<Drink>[] = [
     id: "actions",
     cell: ({ row }) => {
       const drinkData = row.original
-      console.log(drinkData)
 
       return (
         <div className="flex justify-end gap-2">
@@ -41,7 +55,9 @@ export const columnsDrinks: ColumnDef<Drink>[] = [
             <Pencil />
           </Button>
 
-          <Button variant="destructive" size="icon">
+          <Button variant="destructive"
+                  size="icon"
+                  onClick={(event) => deleteDrink(event, drinkData.id, onDeleteSuccessCallback)}>
             <Trash2 />
           </Button>
         </div>
