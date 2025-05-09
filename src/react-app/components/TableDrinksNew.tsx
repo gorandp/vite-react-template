@@ -5,6 +5,7 @@ import React from "react";
 
 interface TableDrinksNewState {
   drinks: Drink[];
+  loading: boolean;
 }
 
 export class TableDrinksNew extends React.Component<{}, TableDrinksNewState> {
@@ -12,6 +13,7 @@ export class TableDrinksNew extends React.Component<{}, TableDrinksNewState> {
     super(props);
     this.state = {
       drinks: [],
+      loading: true,
     };
     this.fetchDrinks = this.fetchDrinks.bind(this);
   }
@@ -22,7 +24,7 @@ export class TableDrinksNew extends React.Component<{}, TableDrinksNewState> {
     fetch("/api/drinks")
       .then((res) => res.json())
       .then((data) => {
-        this.setState({ drinks: data });
+        this.setState({ drinks: data, loading: false });
       });
   }
   render() {
@@ -37,6 +39,7 @@ export class TableDrinksNew extends React.Component<{}, TableDrinksNewState> {
         <DataTable
           columns={columns}
           data={this.state.drinks}
+          loading={this.state.loading}
           emptyTableMsg="No hay bebidas registradas."
         />
       </div>

@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Skeleton } from "@/components/ui/skeleton"
 
 
 /* DataTable component */
@@ -19,12 +20,14 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[],
+  loading?: boolean
   emptyTableMsg?: string
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  loading,
   emptyTableMsg: message = "No hay datos disponibles.",
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
@@ -64,6 +67,16 @@ export function DataTable<TData, TValue>({
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : loading ? (
+            Array.from({ length: 5 }, (_, index) => (
+              <TableRow key={index}>
+                {columns.map((column) => (
+                  <TableCell key={column.id}>
+                    <Skeleton className="h-4 w-full" />
                   </TableCell>
                 ))}
               </TableRow>
