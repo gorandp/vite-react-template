@@ -18,16 +18,16 @@ function RouteComponent() {
     <>
       <div className="flex flex-col items-center justify-center m-0 p-0">
 
-        <section className="max-w-160 w-9/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
+        <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
           <FormAddDrink />
         </section>
 
-        {/* <section className="max-w-160 w-9/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
+        {/* <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
           <h2>Bebidas</h2>
           <TableDrinks />
         </section> */}
 
-        <section className="max-w-160 w-9/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
+        <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
           <TableDrinksNew />
         </section>
         {/* 
