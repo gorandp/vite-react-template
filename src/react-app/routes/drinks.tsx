@@ -1,25 +1,82 @@
-// import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute } from '@tanstack/react-router';
 
 // import TableDrinks from "../components/TableDrinks";
 import { FormAddDrink } from "../components/FormAddDrink";
+import { Drink } from "@/components/TableDrinksColumns";
 import { TableDrinksNew } from "@/components/TableDrinksNew";
 
 export const Route = createFileRoute('/drinks')({
   component: RouteComponent,
 })
 
+
+const getCallbackFetchDrinks = (setDrinks: (data: object) => void) => {
+  return () => {
+    fetch("/api/drinks")
+      .then((res) => res.json())
+      .then((data) => {
+        setDrinks(data);
+    });
+  }
+}
+
+const getCallbackAddDrink = (fetchDrinks: () => void) => {
+  return (drink: { name: string, price: number }) => {
+    fetch("/api/drinks/add", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(drink),
+    })
+      .then((res) => res.json() as Promise<{ name: string }>)
+      .then((data: any) => {
+        console.log(data);
+        if (data.error) {
+          alert(data.errorEs);
+          return;
+        }
+        fetchDrinks();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+}
+
+const getCallbackDeleteDrink = (fetchDrinks: () => void) => {
+  return (id: number) => {
+    fetch(`/api/drinks/delete/${id}`, {
+        method: "POST",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        fetchDrinks();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+}
+
+
 function RouteComponent() {
-  // const [count, setCount] = useState(0);
-  // const [name, setName] = useState("unknown");
-  //   const [title, setTitle] = useState("Tehuelches SN - Ventas");
+  const [drinks, setDrinks] = useState<Drink[] | null>(null);
+  const fetchDrinks = getCallbackFetchDrinks((data) => setDrinks(data as Drink[] || null));
+  const deleteDrink = getCallbackDeleteDrink(fetchDrinks);
+  const addDrink = getCallbackAddDrink(fetchDrinks);
+  useEffect(() => {
+    fetchDrinks();
+  }, []);
 
   return (
     <>
       <div className="flex flex-col items-center justify-center m-0 p-0">
 
         <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
-          <FormAddDrink />
+          <FormAddDrink addDrink={addDrink} />
         </section>
 
         {/* <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
@@ -28,7 +85,7 @@ function RouteComponent() {
         </section> */}
 
         <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
-          <TableDrinksNew />
+          <TableDrinksNew drinks={drinks} deleteDrink={deleteDrink} />
         </section>
         {/* 
         <div className="card">

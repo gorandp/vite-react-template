@@ -10,26 +10,31 @@ const { fieldContext, formContext } = createFormHookContexts()
 // Allow us to bind components to the form to keep type safety but reduce production boilerplate
 // Define this once to have a generator of consistent form instances throughout your app
 const { useAppForm } = createFormHook({
-    fieldComponents: {
-        Input,
-    },
-    formComponents: {
-        Button,
-    },
-    fieldContext,
-    formContext,
+  fieldComponents: {
+    Input,
+  },
+  formComponents: {
+    Button,
+  },
+  fieldContext,
+  formContext,
 })
 
 interface DrinkInput {
-    drink: string
-    price: number
+  drink: string
+  price: number
 }
 const defaultDrinkInput: DrinkInput = {
-    drink: "",
-    price: 0,
+  drink: "",
+  price: 0,
 }
 
-export const FormAddDrink = () => {
+interface FormAddDrinkProps {
+  addDrink: (drink: { name: string; price: number }) => void;
+}
+
+
+export const FormAddDrink = ({ addDrink }: FormAddDrinkProps) => {
     const form = useAppForm({
       defaultValues: defaultDrinkInput,
       validators: {
@@ -41,29 +46,12 @@ export const FormAddDrink = () => {
       },
       onSubmit: ({value}) => {
         // alert(JSON.stringify(value, null, 2))
-        fetch("/api/drinks/add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: value.drink,
-              price: value.price,
-            }),
-        })
-        .then((res) => res.json() as Promise<{ name: string }>)
-        .then((data: any) => {
-            console.log(data);
-            if (data.error) {
-                alert(data.errorEs);
-                return;
-            }
-            // Reload the page
-            window.location.reload();
-        })
-        .catch((error) => {
-            console.error("Error:", error);
+        addDrink({
+          name: value.drink,
+          price: value.price,
         });
+        // Reset the form after submission
+        form.reset()
       },
     })
 
@@ -108,7 +96,7 @@ export const FormAddDrink = () => {
                   type="number"
                   step="100"
                   min="0"
-                  value={field.state.value}
+                  value={field.state.value || ""}
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(Number(e.target.value))}
                   required />

@@ -19,19 +19,17 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[],
-  loading?: boolean
+  data: TData[] | null,
   emptyTableMsg?: string
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  loading,
   emptyTableMsg: message = "No hay datos disponibles.",
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
-    data,
+    data : data || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
@@ -71,7 +69,7 @@ export function DataTable<TData, TValue>({
                 ))}
               </TableRow>
             ))
-          ) : loading ? (
+          ) : data === null ? (
             Array.from({ length: 3 }, (_, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
