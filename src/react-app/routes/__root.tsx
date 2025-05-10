@@ -14,7 +14,7 @@ const navButtonsClasses = (
 
 export const Route = createRootRoute({
     component: () => (
-        <>
+        <div className="flex flex-col min-h-screen">
             <header className='
                     flex justify-between 
                     items-center bg-neutral-700
@@ -37,7 +37,16 @@ export const Route = createRootRoute({
                 </div>
             </header>
             <Outlet />
+            <footer className='
+                    flex justify-center 
+                    items-center bg-neutral-700
+                    mt-auto py-7
+                    xl:px-40 md:px-17 sm:px-10 px-5
+                    text-white'>
+                {/* <h1 className='font-caesar-dressing md:text-4xl text-3xl'>Tehuelches SN</h1> */}
+                <h1 className='font-caesar-dressing md:text-4xl text-3xl'>1%</h1>
+            </footer>
             <TanStackRouterDevtools />
-        </>
+        </div>
     ),
 })
