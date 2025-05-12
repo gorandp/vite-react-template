@@ -1,4 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Pencil, Trash2 } from "lucide-react"
 
@@ -49,14 +60,33 @@ export const getColumnsDrinks = (
             <Pencil />
           </Button>
 
-          <Button variant="destructive"
-                  size="icon"
+
+
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" size="icon">
+                <Trash2 />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Estás seguro?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Esta acción no se puede deshacer.
+                  Esto va a borrar permanentemente la bebida.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                <AlertDialogAction
+                  className="bg-red-500 hover:bg-red-600"
                   onClick={(event) => {
                     event.preventDefault();
                     deleteDrink(drinkData.id);
-                  }}>
-            <Trash2 />
-          </Button>
+                  }}>Continuar</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       )
     },
