@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from '@tanstack/react-router';
 
-// import TableDrinks from "../components/TableDrinks";
 import { FormAddDrink } from "../components/FormAddDrink";
 import { Drink } from "@/components/TableDrinksColumns";
 import { TableDrinksNew } from "@/components/TableDrinksNew";
@@ -78,11 +77,6 @@ function RouteComponent() {
         <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
           <FormAddDrink addDrink={addDrink} />
         </section>
-
-        {/* <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
-          <h2>Bebidas</h2>
-          <TableDrinks />
-        </section> */}
 
         <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
           <TableDrinksNew drinks={drinks} deleteDrink={deleteDrink} />
