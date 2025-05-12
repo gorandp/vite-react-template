@@ -131,7 +131,7 @@ export const FormUpdateDrink = ({ updateDrink, drink, setDrinkToUpdate }: FormUp
       <form.AppForm>
         <form.Button className="mt-2">Actualizar</form.Button>
       </form.AppForm>
-      <Button className="mt-2 ml-2" onClick={(_) => setDrinkToUpdate(null)} >Cancelar</Button>
+      <Button className="mt-2 ml-2" variant={"outline"} onClick={(_) => setDrinkToUpdate(null)} >Cancelar</Button>
     </form>
   )
 }
