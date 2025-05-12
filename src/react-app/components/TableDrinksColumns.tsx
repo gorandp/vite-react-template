@@ -11,7 +11,10 @@ export type Drink = {
 
 /* Column definitions for the table */
 // Changed to a function that accepts a callback
-export const getColumnsDrinks = (deleteDrink: (id: number) => void): ColumnDef<Drink>[] => [
+export const getColumnsDrinks = (
+    deleteDrink: (id: number) => void,
+    setDrinkToUpdate: (drink: Drink | null) => void
+    ): ColumnDef<Drink>[] => [
   {
     accessorKey: "name",
     header: "Nombre",
@@ -36,7 +39,13 @@ export const getColumnsDrinks = (deleteDrink: (id: number) => void): ColumnDef<D
 
       return (
         <div className="flex justify-end gap-2">
-          <Button variant="outline">
+          <Button variant="outline"
+                  size="icon"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    setDrinkToUpdate(drinkData);
+                  }}>
             <Pencil />
           </Button>
 
@@ -44,7 +53,7 @@ export const getColumnsDrinks = (deleteDrink: (id: number) => void): ColumnDef<D
                   size="icon"
                   onClick={(event) => {
                     event.preventDefault();
-                    deleteDrink(drinkData.id)
+                    deleteDrink(drinkData.id);
                   }}>
             <Trash2 />
           </Button>

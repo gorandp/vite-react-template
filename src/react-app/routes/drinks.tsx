@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createFileRoute } from '@tanstack/react-router';
 
 import { FormAddDrink } from "../components/FormAddDrink";
+import { FormUpdateDrink } from "@/components/FormUpdateDrink";
 import { Drink } from "@/components/TableDrinksColumns";
 import { TableDrinksNew } from "@/components/TableDrinksNew";
 
@@ -60,12 +61,38 @@ const getCallbackDeleteDrink = (fetchDrinks: () => void) => {
   }
 }
 
+const getCallbackUpdateDrink = (fetchDrinks: () => void) => {
+  return (drink: { id: number, name: string, price: number }) => {
+    fetch(`/api/drinks/update/${drink.id}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(drink),
+    })
+      .then((res) => res.json() as Promise<{ name: string }>)
+      .then((data: any) => {
+        console.log(data);
+        if (data.error) {
+          alert(data.errorEs);
+          return;
+        }
+        fetchDrinks();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+}
+
 
 function RouteComponent() {
   const [drinks, setDrinks] = useState<Drink[] | null>(null);
   const fetchDrinks = getCallbackFetchDrinks((data) => setDrinks(data as Drink[] || null));
   const deleteDrink = getCallbackDeleteDrink(fetchDrinks);
   const addDrink = getCallbackAddDrink(fetchDrinks);
+  const updateDrink = getCallbackUpdateDrink(fetchDrinks);
+  const [drinkToUpdate, setDrinkToUpdate] = useState<Drink | null>(null);
   useEffect(() => {
     fetchDrinks();
   }, []);
@@ -74,12 +101,24 @@ function RouteComponent() {
     <>
       <div className="flex flex-col items-center justify-center m-0 p-0 mb-5">
 
+        {(drinkToUpdate === null) ? (
+            <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
+              <FormAddDrink addDrink={addDrink} />
+            </section>
+          ) : (
+            <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
+              <FormUpdateDrink
+                updateDrink={updateDrink}
+                drink={drinkToUpdate}
+                setDrinkToUpdate={setDrinkToUpdate} />
+            </section>
+          )
+        }
         <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
-          <FormAddDrink addDrink={addDrink} />
-        </section>
-
-        <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
-          <TableDrinksNew drinks={drinks} deleteDrink={deleteDrink} />
+          <TableDrinksNew
+            drinks={drinks}
+            deleteDrink={deleteDrink}
+            setDrinkToUpdate={setDrinkToUpdate} />
         </section>
         {/* 
         <div className="card">
