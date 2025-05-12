@@ -89,9 +89,9 @@ export const FormUpdateDrink = ({ updateDrink, drink, setDrinkToUpdate }: FormUp
       }}
     >
       <h1 className="mb-5 text-2xl font-roboto">
-        <span className="text-green-500 font-extrabold">&gt;</span>
+        <span className="text-cyan-500 font-extrabold">&gt;</span>
       &nbsp;&nbsp;Actualizar Bebida&nbsp;&nbsp;
-        <span className="text-green-500 font-extrabold">&lt;</span>
+        <span className="text-cyan-500 font-extrabold">&lt;</span>
       </h1>
       {/* Components are bound to `form` and `field` to ensure extreme type safety */}
       {/* Use `form.AppField` to render a component bound to a single field */}
@@ -129,7 +129,7 @@ export const FormUpdateDrink = ({ updateDrink, drink, setDrinkToUpdate }: FormUp
       />
       {/* Components in `form.AppForm` have access to the form context */}
       <form.AppForm>
-        <form.Button className="mt-2">Actualizar</form.Button>
+        <form.Button className="mt-2 bg-cyan-500 hover:bg-cyan-600">Actualizar</form.Button>
       </form.AppForm>
       <Button className="mt-2 ml-2" variant={"outline"} onClick={(_) => setDrinkToUpdate(null)} >Cancelar</Button>
     </form>
