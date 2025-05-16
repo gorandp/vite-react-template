@@ -53,6 +53,10 @@ const getCallbackDeleteDrink = (fetchDrinks: () => void) => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        if (data.error) {
+          alert(data.errorEs);
+          return;
+        }
         fetchDrinks();
       })
       .catch((error) => {
@@ -101,19 +105,17 @@ function RouteComponent() {
     <>
       <div className="flex flex-col items-center justify-center m-0 p-0 mb-5">
 
+        <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
         {(drinkToUpdate === null) ? (
-            <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
               <FormAddDrink addDrink={addDrink} />
-            </section>
           ) : (
-            <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
               <FormUpdateDrink
                 updateDrink={updateDrink}
                 drink={drinkToUpdate}
                 setDrinkToUpdate={setDrinkToUpdate} />
-            </section>
           )
         }
+        </section>
         <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
           <TableDrinksNew
             drinks={drinks}
