@@ -5,6 +5,8 @@ import { FormAddDrink } from "../components/FormAddDrink";
 import { FormUpdateDrink } from "@/components/FormUpdateDrink";
 import { Drink } from "@/components/TableDrinksColumns";
 import { TableDrinksNew } from "@/components/TableDrinksNew";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 export const Route = createFileRoute('/drinks')({
   component: RouteComponent,
@@ -102,7 +104,8 @@ function RouteComponent() {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
+      <Header />
       <div className="flex flex-col items-center justify-center m-0 p-0 mb-5">
 
         <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
@@ -179,6 +182,7 @@ function RouteComponent() {
         </div>
         <p className="read-the-docs text-3xl font-bold underline">Click on the logos to learn more</p> */}
       </div>
-    </>
+      <Footer />
+    </div>
   )
 }

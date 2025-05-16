@@ -1,4 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
 
 export const Route = createFileRoute('/')({
     component: Index,
@@ -6,8 +8,10 @@ export const Route = createFileRoute('/')({
 
 function Index() {
     return (
-        <div className="p-2">
-            <h3>Welcome Home!</h3>
-        </div>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <h3>Welcome Home!</h3>
+        <Footer />
+      </div>
     )
 }
