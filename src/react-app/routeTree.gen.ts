@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as SalesImport } from './routes/sales'
 import { Route as DrinksImport } from './routes/drinks'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthLoginImport } from './routes/auth/login'
 
 // Create/Update Routes
 
@@ -32,6 +33,12 @@ const DrinksRoute = DrinksImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthLoginRoute = AuthLoginImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,6 +67,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SalesImport
       parentRoute: typeof rootRoute
     }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -69,12 +83,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/drinks': typeof DrinksRoute
   '/sales': typeof SalesRoute
+  '/auth/login': typeof AuthLoginRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/drinks': typeof DrinksRoute
   '/sales': typeof SalesRoute
+  '/auth/login': typeof AuthLoginRoute
 }
 
 export interface FileRoutesById {
@@ -82,14 +98,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/drinks': typeof DrinksRoute
   '/sales': typeof SalesRoute
+  '/auth/login': typeof AuthLoginRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/drinks' | '/sales'
+  fullPaths: '/' | '/drinks' | '/sales' | '/auth/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/drinks' | '/sales'
-  id: '__root__' | '/' | '/drinks' | '/sales'
+  to: '/' | '/drinks' | '/sales' | '/auth/login'
+  id: '__root__' | '/' | '/drinks' | '/sales' | '/auth/login'
   fileRoutesById: FileRoutesById
 }
 
@@ -97,12 +114,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DrinksRoute: typeof DrinksRoute
   SalesRoute: typeof SalesRoute
+  AuthLoginRoute: typeof AuthLoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DrinksRoute: DrinksRoute,
   SalesRoute: SalesRoute,
+  AuthLoginRoute: AuthLoginRoute,
 }
 
 export const routeTree = rootRoute
@@ -117,7 +136,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/drinks",
-        "/sales"
+        "/sales",
+        "/auth/login"
       ]
     },
     "/": {
@@ -128,6 +148,9 @@ export const routeTree = rootRoute
     },
     "/sales": {
       "filePath": "sales.tsx"
+    },
+    "/auth/login": {
+      "filePath": "auth/login.tsx"
     }
   }
 }
