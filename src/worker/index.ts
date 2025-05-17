@@ -7,11 +7,12 @@ import { cors } from "hono/cors";
 // import { handleRest } from './rest';
 import { usersRoute } from "./users";
 import { drinksRoute } from "./drinks";
+import { authRoute } from "./auth";
 
 
 export interface Env {
     DB: D1Database;
-    SECRET: SecretsStoreSecret;
+    JWT_SECRET: string;
 }
 
 export default {
@@ -24,7 +25,8 @@ export default {
         })
 
         // // Secret Store key value that we have set
-        // const secret = await env.SECRET.get();
+        // const secret = env.JWT_SECRET;
+        // console.log('Secret:', secret);
 
         // // Authentication middleware that verifies the Authorization header
         // // is sent in on each request and matches the value of our Secret key.
@@ -50,6 +52,7 @@ export default {
         // app.all('/api/*', authMiddleware, handleRest);
         app.get("/api/", (c) => c.json({ name: "Cloudflare" }));
 
+        app.route('/api/auth', authRoute);
         app.route('/api/users', usersRoute);
         app.route('/api/drinks', drinksRoute);
 
