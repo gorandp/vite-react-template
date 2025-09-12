@@ -57,6 +57,8 @@
     "deploy": "npm run build && wrangler deploy",
     "dev": "vite",
     "lint": "eslint .",
+    "db:generate": "drizzle-kit generate:sqlite",
+    "db:up": "drizzle-kit up:sqlite",
     "preview": "npm run build && vite preview"
   },
   "type": "module"
