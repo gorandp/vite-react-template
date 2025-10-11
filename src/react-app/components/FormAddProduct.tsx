@@ -20,36 +20,47 @@ const { useAppForm } = createFormHook({
   formContext,
 })
 
-interface DrinkInput {
-  drink: string
-  price: number
+interface ProductInput {
+  name: string
+  unit: string
+  buy_price: number
+  sell_price: number
+  stock: number
 }
-const defaultDrinkInput: DrinkInput = {
-  drink: "",
-  price: 0,
+const defaultProductInput: ProductInput = {
+  name: "",
+  unit: "",
+  buy_price: 0,
+  sell_price: 0,
+  stock: 0,
 }
 
-interface FormAddDrinkProps {
-  addDrink: (drink: { name: string; price: number }) => void;
+interface FormAddProductProps {
+  addProduct: (product: {
+    name: string;
+    unit: string;
+    stock: number;
+    buy_price: number;
+    sell_price: number }) => void;
 }
 
 
-export const FormAddDrink = ({ addDrink }: FormAddDrinkProps) => {
+export const FormAddProduct = ({ addProduct }: FormAddProductProps) => {
     const form = useAppForm({
-      defaultValues: defaultDrinkInput,
+      defaultValues: defaultProductInput,
       validators: {
         // Pass a schema or function to validate
         onChange: z.object({
-          drink: z.string(),
-          price: z.number(),
+          name: z.string(),
+          unit: z.string(),
+          stock: z.number(),
+          buy_price: z.number(),
+          sell_price: z.number(),
         }),
       },
       onSubmit: ({value}) => {
         // alert(JSON.stringify(value, null, 2))
-        addDrink({
-          name: value.drink,
-          price: value.price,
-        });
+        addProduct(value);
         // Reset the form after submission
         form.reset()
       },
@@ -62,23 +73,40 @@ export const FormAddDrink = ({ addDrink }: FormAddDrinkProps) => {
               form.handleSubmit()
           }}
         >
-          {/* <h1 className="mb-5 text-2xl font-headers decoration-dotted decoration-orange-500 underline decoration-3">Registrar Bebida</h1> */}
+          {/* <h1 className="mb-5 text-2xl font-headers decoration-dotted decoration-primary underline decoration-3">Registrar Bebida</h1> */}
           <h1 className="mb-5 text-2xl font-roboto">
-            <span className="text-orange-500 font-extrabold">&gt;</span>
-          &nbsp;&nbsp;Registrar Bebida&nbsp;&nbsp;
-            <span className="text-orange-500 font-extrabold">&lt;</span>
+            <span className="text-primary font-extrabold">&gt;</span>
+          &nbsp;&nbsp;Registrar Producto&nbsp;&nbsp;
+            <span className="text-primary font-extrabold">&lt;</span>
           </h1>
           {/* Components are bound to `form` and `field` to ensure extreme type safety */}
           {/* Use `form.AppField` to render a component bound to a single field */}
           <form.AppField
-            name="drink"
+            name="name"
             children={(field) => 
               <label>Nombre: 
                 <field.Input
                   className="mb-5"
                   type="text"
-                  name="drink"
-                  id="drink"
+                  name="name"
+                  id="name"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  required />
+              </label>
+            }
+          />
+          {/* Use `form.AppField` to render a component bound to a single field */}
+          <form.AppField
+            name="unit"
+            children={(field) => 
+              <label>Unidad: 
+                <field.Input
+                  className="mb-5"
+                  type="text"
+                  name="unit"
+                  id="unit"
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(e.target.value)}
@@ -88,9 +116,9 @@ export const FormAddDrink = ({ addDrink }: FormAddDrinkProps) => {
           />
           {/* The "name" property will throw a TypeScript error if typo"d  */}
           <form.AppField
-            name="price"
+            name="buy_price"
             children={(field) =>
-              <label>Precio unitario: 
+              <label>Precio unitario de compra: 
                 <field.Input
                   className="mb-5"
                   type="number"
@@ -102,9 +130,56 @@ export const FormAddDrink = ({ addDrink }: FormAddDrinkProps) => {
                   required />
               </label>}
           />
+          {/* The "name" property will throw a TypeScript error if typo"d  */}
+          <form.AppField
+            name="sell_price"
+            children={(field) =>
+              <label>Precio unitario de venta: 
+                <field.Input
+                  className="mb-5"
+                  type="number"
+                  step="100"
+                  min="0"
+                  value={field.state.value || ""}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(Number(e.target.value))}
+                  required />
+              </label>}
+          />
+          {/* The "name" property will throw a TypeScript error if typo"d  */}
+          {/* <form.AppField
+            name="primary_products"
+            children={(field) =>
+              <label>Productos primarios: 
+                <field.Input
+                  className="mb-5"
+                  type="number"
+                  step="100"
+                  min="0"
+                  value={field.state.value || ""}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(Number(e.target.value))}
+                  required />
+              </label>}
+          /> */}
+          {/* The "name" property will throw a TypeScript error if typo"d  */}
+          <form.AppField
+            name="stock"
+            children={(field) =>
+              <label>Stock inicial: 
+                <field.Input
+                  className="mb-5"
+                  type="number"
+                  min="0"
+                  value={field.state.value || ""}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(Number(e.target.value))}
+                  required />
+              </label>}
+          />
           {/* Components in `form.AppForm` have access to the form context */}
           <form.AppForm>
-            <form.Button className="mt-2">Agregar Bebida</form.Button>
+            <form.Button className="mt-2 text-white">Agregar Producto</form.Button>
           </form.AppForm>
         </form>
     )

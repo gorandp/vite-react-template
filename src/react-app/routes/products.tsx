@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from '@tanstack/react-router';
 
-import { FormAddDrink } from "../components/FormAddProduct";
-import { FormUpdateDrink } from "@/components/FormUpdateProduct";
+import { FormAddProduct } from "../components/FormAddProduct";
+import { FormUpdateProduct } from "@/components/FormUpdateProduct";
 import { Product } from "@/components/TableProductsColumns";
 import { TableProductsNew } from "@/components/TableProductsNew";
 import { Header } from "@/components/Header";
@@ -23,14 +23,21 @@ const getCallbackFetchProducts = (setProducts: (data: object) => void) => {
   }
 }
 
-const getCallbackAddProduct = (fetchDrinks: () => void) => {
-  return (drink: { name: string, price: number }) => {
+const getCallbackAddProduct = (fetchProducts: () => void) => {
+  return (product: {
+      name: string,
+      price: number,
+      unit: string,
+      buy_price: number,
+      sell_price: number,
+      stock: number,
+    }) => {
     fetch("/api/products/add", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(drink),
+        body: JSON.stringify(product),
     })
       .then((res) => res.json() as Promise<{ name: string }>)
       .then((data: any) => {
@@ -39,7 +46,7 @@ const getCallbackAddProduct = (fetchDrinks: () => void) => {
           alert(data.errorEs);
           return;
         }
-        fetchDrinks();
+        fetchProducts();
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -47,8 +54,8 @@ const getCallbackAddProduct = (fetchDrinks: () => void) => {
   }
 }
 
-const getCallbackDeleteProduct = (fetchDrinks: () => void) => {
-  return (id: number) => {
+const getCallbackDeleteProduct = (fetchProducts: () => void) => {
+  return (id: string) => {
     fetch(`/api/products/delete/${id}`, {
         method: "POST",
     })
@@ -59,7 +66,7 @@ const getCallbackDeleteProduct = (fetchDrinks: () => void) => {
           alert(data.errorEs);
           return;
         }
-        fetchDrinks();
+        fetchProducts();
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -67,14 +74,22 @@ const getCallbackDeleteProduct = (fetchDrinks: () => void) => {
   }
 }
 
-const getCallbackUpdateProduct = (fetchDrinks: () => void) => {
-  return (drink: { id: number, name: string, price: number }) => {
-    fetch(`/api/products/update/${drink.id}`, {
+const getCallbackUpdateProduct = (fetchProducts: () => void) => {
+  return (product: {
+      id: string,
+      name: string,
+      unit: string,
+      buy_price: number,
+      sell_price: number,
+      stock: number,
+      active: boolean,
+    }) => {
+    fetch(`/api/products/update/${product.id}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(drink),
+        body: JSON.stringify(product),
     })
       .then((res) => res.json() as Promise<{ name: string }>)
       .then((data: any) => {
@@ -83,7 +98,7 @@ const getCallbackUpdateProduct = (fetchDrinks: () => void) => {
           alert(data.errorEs);
           return;
         }
-        fetchDrinks();
+        fetchProducts();
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -94,36 +109,36 @@ const getCallbackUpdateProduct = (fetchDrinks: () => void) => {
 
 function RouteComponent() {
   const [products, setProducts] = useState<Product[] | null>(null);
-  const fetchDrinks = getCallbackFetchProducts((data) => setProducts(data as Product[] || null));
-  const deleteDrink = getCallbackDeleteProduct(fetchDrinks);
-  const addDrink = getCallbackAddProduct(fetchDrinks);
-  const updateDrink = getCallbackUpdateProduct(fetchDrinks);
-  const [drinkToUpdate, setDrinkToUpdate] = useState<Product | null>(null);
+  const fetchProducts = getCallbackFetchProducts((data) => setProducts(data as Product[] || null));
+  const deleteProduct = getCallbackDeleteProduct(fetchProducts);
+  const addProduct = getCallbackAddProduct(fetchProducts);
+  const updateProduct = getCallbackUpdateProduct(fetchProducts);
+  const [productToUpdate, setProductToUpdate] = useState<Product | null>(null);
   useEffect(() => {
-    fetchDrinks();
+    fetchProducts();
   }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <div className="flex flex-col items-center justify-center m-0 p-0 mb-5">
+      <div className="flex flex-col md:flex-row items-center md:items-start gap-3 justify-center m-0 p-0 mb-5">
 
-        <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
-        {(drinkToUpdate === null) ? (
-              <FormAddDrink addDrink={addDrink} />
+        <section className="max-w-150 md:w-3/15 w-11/12 my-3 mx-0 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-lg shadow-md">
+        {(productToUpdate === null) ? (
+              <FormAddProduct addProduct={addProduct} />
           ) : (
-              <FormUpdateDrink
-                updateDrink={updateDrink}
-                drink={drinkToUpdate}
-                setDrinkToUpdate={setDrinkToUpdate} />
+              <FormUpdateProduct
+                updateProduct={updateProduct}
+                product={productToUpdate}
+                setProductToUpdate={setProductToUpdate} />
           )
         }
         </section>
-        <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
+        <section className="max-w-300 md:w-9/12 w-11/12 my-3 mx-0 bg-neutral-100 dark:bg-neutral-900 p-4 rounded-lg shadow-md">
           <TableProductsNew
             products={products}
-            deleteProduct={deleteDrink}
-            setProductToUpdate={setDrinkToUpdate} />
+            deleteProduct={deleteProduct}
+            setProductToUpdate={setProductToUpdate} />
         </section>
         {/* 
         <div className="card">
@@ -148,7 +163,7 @@ function RouteComponent() {
             }}
             aria-label="get name"
           >
-            Create table drinks {name}
+            Create table products {name}
           </button>
           <button
             onClick={() => {
@@ -174,7 +189,7 @@ function RouteComponent() {
             }}
             aria-label="get name"
           >
-            Get drinks {name}
+            Get products {name}
           </button>
           <p>
             Edit <code>worker/index.ts</code> to change the name

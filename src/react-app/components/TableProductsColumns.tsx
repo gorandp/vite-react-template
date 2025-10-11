@@ -14,16 +14,21 @@ import { Button } from "@/components/ui/button"
 import { Pencil, Trash2 } from "lucide-react"
 
 export type Product = {
-  id: number;
+  id: string;
   name: string;
-  price: number;
+  unit: string;
+  active: boolean;
+  buy_price: number;
+  sell_price: number;
+  stock: number;
+  last_update: string;
 }
 
 
 /* Column definitions for the table */
 // Changed to a function that accepts a callback
 export const getColumnsProducts = (
-    deleteProduct: (id: number) => void,
+    deleteProduct: (id: string) => void,
     setProductToUpdate: (product: Product | null) => void
     ): ColumnDef<Product>[] => [
   {
@@ -31,14 +36,81 @@ export const getColumnsProducts = (
     header: "Nombre",
   },
   {
-    accessorKey: "price",
-    header: () => <div className="text-right">Precio unitario</div>,
+    accessorKey: "unit",
+    header: () => <div className="text-right">Unidad</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("price"))
-      const formatted = new Intl.NumberFormat("en-US", {
+      const unit: string = row.getValue("unit")
+      const formatted = unit ? unit : "-"
+
+      return <div className="text-right font-medium">{formatted}</div>
+    },
+  },
+  {
+    accessorKey: "buy_price",
+    header: () => <div className="text-right">Compra</div>,
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("buy_price"))
+      const formatted = new Intl.NumberFormat("es-AR", {
         style: "currency",
-        currency: "USD",
+        currency: "ARS",
       }).format(amount)
+
+      return <div className="text-right font-medium">{formatted}</div>
+    },
+  },
+  {
+    accessorKey: "sell_price",
+    header: () => <div className="text-right">Venta</div>,
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("sell_price"))
+      const formatted = new Intl.NumberFormat("es-AR", {
+        style: "currency",
+        currency: "ARS",
+      }).format(amount)
+
+      return <div className="text-right font-medium">{formatted}</div>
+    },
+  },
+  {
+    accessorKey: "profit_margin",
+    header: () => <div className="text-right">Ganancia</div>,
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("profit_margin"))
+      const formatted = new Intl.NumberFormat("es-AR", {
+        style: "percent",
+      }).format(amount)
+
+      return <div className="text-right font-medium">{formatted}</div>
+    },
+  },
+  {
+    accessorKey: "stock",
+    header: () => <div className="text-right">Stock</div>,
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("stock"))
+      const formatted = new Intl.NumberFormat("es-AR", {
+        style: "decimal",
+      }).format(amount)
+
+      return <div className="text-right font-medium">{formatted}</div>
+    },
+  },
+  {
+    accessorKey: "last_update",
+    header: () => <div className="text-right">Última Actualización</div>,
+    cell: ({ row }) => {
+      const l_update = new Date(row.getValue("last_update"))
+      const formatted = new Intl.DateTimeFormat("es-AR").format(l_update)
+
+      return <div className="text-right font-medium">{formatted}</div>
+    },
+  },
+  {
+    accessorKey: "active",
+    header: () => <div className="text-right">Activo</div>,
+    cell: ({ row }) => {
+      const active = Boolean(row.getValue("active"))
+      const formatted = active ? "Sí" : "No"
 
       return <div className="text-right font-medium">{formatted}</div>
     },
@@ -59,8 +131,6 @@ export const getColumnsProducts = (
                   }}>
             <Pencil />
           </Button>
-
-
 
           <AlertDialog>
             <AlertDialogTrigger asChild>

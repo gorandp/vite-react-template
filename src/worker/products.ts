@@ -90,11 +90,19 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
     // })
     .post("/update/:id", async (c) => {
         const productId = c.req.param("id");
-        const { name, price } = await c.req.json();
-        if (!name) {
+        const { 
+            name,
+            unit,
+            primary_products,
+            active,
+            buy_price,
+            sell_price,
+            stock,
+         } = await c.req.json();
+        if ( !name || !unit || !buy_price || !sell_price) {
             return c.json(
-                { error: "Name is required",
-                  errorEs: "El nombre es requerido" }, 400);
+                { error: "name/unit/buy_price/sell_price are required",
+                  errorEs: "name/unit/buy_price/sell_price son requeridos" }, 400);
         }
         const db = drizzle(c.env.DB);
         // check if product already exists
@@ -120,13 +128,18 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
         // update product
         const product = {
             name,
-            price,
+            unit,
+            primary_products,
+            active,
+            buy_price,
+            sell_price,
+            stock,
         }
-        const newProduct = await db.update(products)
+        const updatedProduct = await db.update(products)
             .set(product)
             .where(eq(products.id, productId))
             .returning().get();
-        return c.json(newProduct);
+        return c.json(updatedProduct);
     })
     .post("/delete/:id", async (c) => {
         const productId = c.req.param("id");
