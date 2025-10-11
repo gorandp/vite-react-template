@@ -29,7 +29,7 @@ export const authMiddleware = async (c, next) => {
     return c.json({ error: "Token is required" }, 401);
   }
   try {
-    const payload = await decode(token, c.env.JWT_SECRET);
+    const payload = await verify(token, c.env.JWT_SECRET);
     c.set("user", payload);
     return next();
   } catch (err) {

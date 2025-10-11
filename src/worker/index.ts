@@ -12,6 +12,7 @@ import { drinksRoute } from "./drinks";
 export interface Env {
     DB: D1Database;
     SECRET: SecretsStoreSecret;
+    JWT_SECRET: string;
 }
 
 export default {
