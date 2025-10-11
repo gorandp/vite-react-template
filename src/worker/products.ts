@@ -27,9 +27,10 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
                 { error: "name/unit/buy_price/sell_price are required",
                   errorEs: "name/unit/buy_price/sell_price son requeridos" }, 400);
         }
+        console.log(`name: ${name}, unit: ${unit}, buy_price: ${buy_price}, sell_price: ${sell_price}`);
         const productId = name.toLowerCase().slice(0, 36)
                     .replaceAll(
-                        RegExp(`[\[|\]|\(|\)|,|\.|-| |\\|/|<|>]`),
+                        RegExp(`[^a-zA-Z0-9]`, 'g'),
                         "_");
         const db = drizzle(c.env.DB);
         // check if product already exists
@@ -87,7 +88,7 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
     //     // console.log(data)
     //     return c.json({dropRes, createRes, data});
     // })
-    .post("/update/:id{[0-9]+}", async (c) => {
+    .post("/update/:id", async (c) => {
         const productId = c.req.param("id");
         const { name, price } = await c.req.json();
         if (!name) {
@@ -127,10 +128,11 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
             .returning().get();
         return c.json(newProduct);
     })
-    .post("/delete/:id{[0-9]+}", async (c) => {
+    .post("/delete/:id", async (c) => {
         const productId = c.req.param("id");
         const db = drizzle(c.env.DB);
         // check if product already exists
+        console.log(`Deleting product with id: ${productId}`);
         const existingProduct = await db.select()
             .from(products)
             .where(eq(products.id, productId));
@@ -142,12 +144,13 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
                 }, 400);
         }
         // delete product
+        console.log(`Deleted: ${productId}`);
         const deletedProduct = await db.delete(products)
             .where(eq(products.id, productId))
             .returning().get();
         return c.json(deletedProduct);
     })
-    .get("/:id{[0-9]+}", async (c) => {
+    .get("/:id", async (c) => {
         //validate it is a number
         if (isNaN(Number(c.req.param("id")))) {
             return c.json(
