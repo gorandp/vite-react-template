@@ -1,31 +1,31 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from '@tanstack/react-router';
 
-import { FormAddDrink } from "../components/FormAddDrink";
-import { FormUpdateDrink } from "@/components/FormUpdateDrink";
-import { Drink } from "@/components/TableDrinksColumns";
-import { TableDrinksNew } from "@/components/TableDrinksNew";
+import { FormAddDrink } from "../components/FormAddProduct";
+import { FormUpdateDrink } from "@/components/FormUpdateProduct";
+import { Product } from "@/components/TableProductsColumns";
+import { TableProductsNew } from "@/components/TableProductsNew";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
-export const Route = createFileRoute('/drinks')({
+export const Route = createFileRoute('/products')({
   component: RouteComponent,
 })
 
 
-const getCallbackFetchDrinks = (setDrinks: (data: object) => void) => {
+const getCallbackFetchProducts = (setProducts: (data: object) => void) => {
   return () => {
-    fetch("/api/drinks")
+    fetch("/api/products")
       .then((res) => res.json())
       .then((data) => {
-        setDrinks(data);
+        setProducts(data);
     });
   }
 }
 
-const getCallbackAddDrink = (fetchDrinks: () => void) => {
+const getCallbackAddProduct = (fetchDrinks: () => void) => {
   return (drink: { name: string, price: number }) => {
-    fetch("/api/drinks/add", {
+    fetch("/api/products/add", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -47,9 +47,9 @@ const getCallbackAddDrink = (fetchDrinks: () => void) => {
   }
 }
 
-const getCallbackDeleteDrink = (fetchDrinks: () => void) => {
+const getCallbackDeleteProduct = (fetchDrinks: () => void) => {
   return (id: number) => {
-    fetch(`/api/drinks/delete/${id}`, {
+    fetch(`/api/products/delete/${id}`, {
         method: "POST",
     })
       .then((res) => res.json())
@@ -67,9 +67,9 @@ const getCallbackDeleteDrink = (fetchDrinks: () => void) => {
   }
 }
 
-const getCallbackUpdateDrink = (fetchDrinks: () => void) => {
+const getCallbackUpdateProduct = (fetchDrinks: () => void) => {
   return (drink: { id: number, name: string, price: number }) => {
-    fetch(`/api/drinks/update/${drink.id}`, {
+    fetch(`/api/products/update/${drink.id}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -93,12 +93,12 @@ const getCallbackUpdateDrink = (fetchDrinks: () => void) => {
 
 
 function RouteComponent() {
-  const [drinks, setDrinks] = useState<Drink[] | null>(null);
-  const fetchDrinks = getCallbackFetchDrinks((data) => setDrinks(data as Drink[] || null));
-  const deleteDrink = getCallbackDeleteDrink(fetchDrinks);
-  const addDrink = getCallbackAddDrink(fetchDrinks);
-  const updateDrink = getCallbackUpdateDrink(fetchDrinks);
-  const [drinkToUpdate, setDrinkToUpdate] = useState<Drink | null>(null);
+  const [products, setProducts] = useState<Product[] | null>(null);
+  const fetchDrinks = getCallbackFetchProducts((data) => setProducts(data as Product[] || null));
+  const deleteDrink = getCallbackDeleteProduct(fetchDrinks);
+  const addDrink = getCallbackAddProduct(fetchDrinks);
+  const updateDrink = getCallbackUpdateProduct(fetchDrinks);
+  const [drinkToUpdate, setDrinkToUpdate] = useState<Product | null>(null);
   useEffect(() => {
     fetchDrinks();
   }, []);
@@ -120,10 +120,10 @@ function RouteComponent() {
         }
         </section>
         <section className="max-w-160 sm:w-9/12 w-11/12 my-3 mx-0 bg-white p-4 rounded-lg shadow-md">
-          <TableDrinksNew
-            drinks={drinks}
-            deleteDrink={deleteDrink}
-            setDrinkToUpdate={setDrinkToUpdate} />
+          <TableProductsNew
+            products={products}
+            deleteProduct={deleteDrink}
+            setProductToUpdate={setDrinkToUpdate} />
         </section>
         {/* 
         <div className="card">
@@ -140,7 +140,7 @@ function RouteComponent() {
         <div className="card">
           <button
             onClick={() => {
-              fetch("/api/drinks/initTable", {
+              fetch("/api/products/initTable", {
                 method: "POST"
               })
                 .then((res) => res.json() as Promise<{ name: string }>)
@@ -168,7 +168,7 @@ function RouteComponent() {
           </button>
           <button
             onClick={() => {
-              fetch("/api/drinks")
+              fetch("/api/products")
                 .then((res) => res.json() as Promise<{ name: string }>)
                 .then((data) => setName(data.name));
             }}

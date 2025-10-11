@@ -60,35 +60,35 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
         const newProduct = await db.insert(products).values(product).returning().get();
         return c.json(newProduct);
     })
-    .post("/initTable", async (c) => {
-        const db = drizzle(c.env.DB);
-        // delete table if exists
-        const dropRes = await db.run(sql`DROP TABLE IF EXISTS products`);
-        // create table
-        const createRes = await db.run(
-            sql`CREATE TABLE IF NOT EXISTS products (
+    // .post("/initTable", async (c) => {
+    //     const db = drizzle(c.env.DB);
+    //     // delete table if exists
+    //     const dropRes = await db.run(sql`DROP TABLE IF EXISTS products`);
+    //     // create table
+    //     const createRes = await db.run(
+    //         sql`CREATE TABLE IF NOT EXISTS products (
                 
-            )`
-        );
-        // create test data
-        const pop_drinks = [
-            { name: "Cerveza",
-              price: 4000.0, },
-            { name: "Vino",
-              price: 8000.0, },
-            { name: "Fernet",
-              price: 12000.0, },
-            { name: "Gancia",
-              price: 6000.0, },
-            { name: "Whisky",
-              price: 20000.0, },
-        ]
-        const data = await db.insert(drinksTable).values(pop_drinks).returning().get();
-        // console.log(data)
-        return c.json({dropRes, createRes, data});
-    })
+    //         )`
+    //     );
+    //     // create test data
+    //     const pop_products = [
+    //         { name: "Cerveza",
+    //           price: 4000.0, },
+    //         { name: "Vino",
+    //           price: 8000.0, },
+    //         { name: "Fernet",
+    //           price: 12000.0, },
+    //         { name: "Gancia",
+    //           price: 6000.0, },
+    //         { name: "Whisky",
+    //           price: 20000.0, },
+    //     ]
+    //     const data = await db.insert(products).values(pop_products).returning().get();
+    //     // console.log(data)
+    //     return c.json({dropRes, createRes, data});
+    // })
     .post("/update/:id{[0-9]+}", async (c) => {
-        const drinkId = Number(c.req.param("id"));
+        const productId = c.req.param("id");
         const { name, price } = await c.req.json();
         if (!name) {
             return c.json(
@@ -96,77 +96,77 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
                   errorEs: "El nombre es requerido" }, 400);
         }
         const db = drizzle(c.env.DB);
-        // check if drink already exists
-        const existingDrink = await db.select()
-            .from(drinksTable)
-            .where(eq(drinksTable.id, drinkId));
-        if (existingDrink.length === 0) {
-            // drink doesn't exist
+        // check if product already exists
+        const existingProduct = await db.select()
+            .from(products)
+            .where(eq(products.id, productId));
+        if (existingProduct.length === 0) {
+            // product doesn't exist
             return c.json(
-                { error: "Drink does not exist",
-                  errorEs: "La bebida no existe" }, 400);
+                { error: "Product does not exist",
+                  errorEs: "El producto no existe" }, 400);
         }
-        const existingDrinkName = await db.select()
-            .from(drinksTable)
-            .where(eq(drinksTable.name, name));
-        if (existingDrinkName.length > 0 && existingDrinkName[0].id !== drinkId) {
-            // drink already exists
+        const existingProductName = await db.select()
+            .from(products)
+            .where(eq(products.name, name));
+        if (existingProductName.length > 0 && existingProductName[0].id !== productId) {
+            // product already exists
             return c.json(
-                { error: "Drink name already used by other drink",
-                  errorEs: "El nombre de la bebida ya está en uso por otra bebida"
+                { error: "Product name already used by other product",
+                  errorEs: "El nombre del producto ya está en uso por otro producto"
                   }, 400);
         }
-        // update drink
-        const drink = {
+        // update product
+        const product = {
             name,
             price,
         }
-        const newDrink = await db.update(drinksTable)
-            .set(drink)
-            .where(eq(drinksTable.id, drinkId))
+        const newProduct = await db.update(products)
+            .set(product)
+            .where(eq(products.id, productId))
             .returning().get();
-        return c.json(newDrink);
+        return c.json(newProduct);
     })
     .post("/delete/:id{[0-9]+}", async (c) => {
-        const drinkId = Number(c.req.param("id"));
+        const productId = c.req.param("id");
         const db = drizzle(c.env.DB);
-        // check if drink already exists
-        const existingDrink = await db.select()
-            .from(drinksTable)
-            .where(eq(drinksTable.id, drinkId));
-        if (existingDrink.length === 0) {
-            // drink doesn't exist
+        // check if product already exists
+        const existingProduct = await db.select()
+            .from(products)
+            .where(eq(products.id, productId));
+        if (existingProduct.length === 0) {
+            // product doesn't exist
             return c.json(
-                { error: "Drink does not exist",
-                  errorEs: "La bebida no existe"
+                { error: "Product does not exist",
+                  errorEs: "El producto no existe"
                 }, 400);
         }
-        // delete drink
-        const deletedDrink = await db.delete(drinksTable)
-            .where(eq(drinksTable.id, drinkId))
+        // delete product
+        const deletedProduct = await db.delete(products)
+            .where(eq(products.id, productId))
             .returning().get();
-        return c.json(deletedDrink);
+        return c.json(deletedProduct);
     })
     .get("/:id{[0-9]+}", async (c) => {
         //validate it is a number
         if (isNaN(Number(c.req.param("id")))) {
             return c.json(
-                { error: "Invalid drink id",
-                  errorEs: "ID de bebida inválido"
+                { error: "Invalid product id",
+                  errorEs: "ID de producto inválido"
                  }, 400);
         }
-        const drinkId = Number(c.req.param("id"));
+        const productId = c.req.param("id");
         const db = drizzle(c.env.DB);
-        // check if drink already exists
-        const existingDrink = await db.select()
-            .from(drinksTable)
-            .where(eq(drinksTable.id, drinkId));
-        if (existingDrink.length === 0) {
-            // drink doesn't exist
+        // check if product already exists
+        const existingProduct = await db.select()
+            .from(products)
+            .where(eq(products.id, productId));
+        if (existingProduct.length === 0) {
+            // product doesn't exist
             return c.json(
-                { error: "Drink does not exist",
-                  errorEs: "La bebida no existe"
+                { error: "Product does not exist",
+                  errorEs: "El producto no existe"
                 }, 400);
         }
-        return c.json(existingDrink[0]);
+        return c.json(existingProduct[0]);
     });

@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Pencil, Trash2 } from "lucide-react"
 
-export type Drink = {
+export type Product = {
   id: number;
   name: string;
   price: number;
@@ -22,10 +22,10 @@ export type Drink = {
 
 /* Column definitions for the table */
 // Changed to a function that accepts a callback
-export const getColumnsDrinks = (
-    deleteDrink: (id: number) => void,
-    setDrinkToUpdate: (drink: Drink | null) => void
-    ): ColumnDef<Drink>[] => [
+export const getColumnsProducts = (
+    deleteProduct: (id: number) => void,
+    setProductToUpdate: (product: Product | null) => void
+    ): ColumnDef<Product>[] => [
   {
     accessorKey: "name",
     header: "Nombre",
@@ -46,7 +46,7 @@ export const getColumnsDrinks = (
   {
     id: "actions",
     cell: ({ row }) => {
-      const drinkData = row.original
+      const productData = row.original
 
       return (
         <div className="flex justify-end gap-2">
@@ -55,7 +55,7 @@ export const getColumnsDrinks = (
                   onClick={(event) => {
                     event.preventDefault();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
-                    setDrinkToUpdate(drinkData);
+                    setProductToUpdate(productData);
                   }}>
             <Pencil />
           </Button>
@@ -82,7 +82,7 @@ export const getColumnsDrinks = (
                   className="bg-red-500 hover:bg-red-600"
                   onClick={(event) => {
                     event.preventDefault();
-                    deleteDrink(drinkData.id);
+                    deleteProduct(productData.id);
                   }}>Continuar</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

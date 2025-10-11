@@ -26,6 +26,6 @@ if (!rootElement.innerHTML) {
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <RouterProvider router={router} />
       </ThemeProvider>
-    </StrictMode>,
+    </StrictMode>
   )
 }

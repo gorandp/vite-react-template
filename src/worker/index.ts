@@ -6,7 +6,7 @@ import { cors } from "hono/cors";
 // import { sql } from 'drizzle-orm';
 // import { handleRest } from './rest';
 import { usersRoute } from "./users";
-import { drinksRoute } from "./drinks";
+import { productsRoute } from "./products";
 
 
 export interface Env {
@@ -52,7 +52,7 @@ export default {
         app.get("/api/", (c) => c.json({ name: "Cloudflare" }));
 
         app.route('/api/users', usersRoute);
-        app.route('/api/drinks', drinksRoute);
+        app.route('/api/products', productsRoute);
 
         // // Execute a raw SQL statement with parameters with this route
         // app.post('/query', authMiddleware, async (c) => {

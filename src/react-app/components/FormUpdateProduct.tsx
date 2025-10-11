@@ -2,7 +2,7 @@ import { createFormHook, createFormHookContexts } from "@tanstack/react-form"
 // Form components that pre-bind events from the form hook; check our "Form Composition" guide for more
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Drink } from "./TableDrinksColumns"
+import { Product } from "./TableProductsColumns"
 // We also support Valibot, ArkType, and any other standard schema library
 import { z } from "zod"
 
@@ -34,9 +34,9 @@ const defaultDrinkInput: DrinkInput = {
 }
 
 interface FormUpdateDrinkProps {
-  updateDrink: (drink: Drink) => void;
-  drink: Drink;
-  setDrinkToUpdate: (drink: Drink | null) => void;
+  updateDrink: (drink: Product) => void;
+  drink: Product;
+  setDrinkToUpdate: (drink: Product | null) => void;
 }
 
 
