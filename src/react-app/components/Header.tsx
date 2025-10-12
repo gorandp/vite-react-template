@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import logoAGA from "../assets/Logo_AGA.png";
-import { buttonVariants } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { ModeToggle } from "@/components/ThemeModeToggle"
 
 /* Styles */
@@ -38,6 +38,12 @@ export const Header = () => {
             Productos
           </Link>
           <ModeToggle />
+          <Button variant="outline" onClick={() => {
+            localStorage.removeItem('JWT_TOKEN');
+            window.location.href = '/login';
+          }}>
+            Cerrar sesión
+          </Button>
         </div>
       </header>
     )

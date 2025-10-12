@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 
 import { FormAddProduct } from "../components/FormAddProduct";
 import { FormUpdateProduct } from "@/components/FormUpdateProduct";
@@ -9,15 +9,41 @@ import { Header } from "@/components/Header";
 
 export const Route = createFileRoute('/products')({
   component: RouteComponent,
+  beforeLoad: async ({ location }) => {
+    if (!localStorage.getItem('JWT_TOKEN')) {
+      throw redirect({
+        to: '/login',
+        search: {
+          // Use the current location to power a redirect after login
+          // (Do not use `router.state.resolvedLocation` as it can
+          // potentially lag behind the actual current location)
+          redirect: location.href,
+        },
+      })
+    }
+  },
 })
 
 
 const getCallbackFetchProducts = (setProducts: (data: object) => void) => {
   return () => {
-    fetch("/api/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
+    fetch("/api/products", {
+      method: "GET",
+      headers: {
+          "Authorization": `Bearer ${localStorage.getItem('JWT_TOKEN')}`
+      },
+    })
+    .then((res) => {
+      if (res.status === 401) {
+        // alert("Sesión expirada. Por favor, inicie sesión de nuevo.");
+        localStorage.removeItem('JWT_TOKEN');
+        redirect({ to: '/login' });
+        return;
+      }
+      return res.json();
+    })
+    .then((data) => {
+      setProducts(data);
     });
   }
 }
@@ -35,6 +61,7 @@ const getCallbackAddProduct = (fetchProducts: () => void) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('JWT_TOKEN')}`
         },
         body: JSON.stringify(product),
     })
@@ -57,6 +84,9 @@ const getCallbackDeleteProduct = (fetchProducts: () => void) => {
   return (id: string) => {
     fetch(`/api/products/delete/${id}`, {
         method: "POST",
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem('JWT_TOKEN')}`
+        }
     })
       .then((res) => res.json())
       .then((data) => {
@@ -87,6 +117,7 @@ const getCallbackUpdateProduct = (fetchProducts: () => void) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('JWT_TOKEN')}`
         },
         body: JSON.stringify(product),
     })
