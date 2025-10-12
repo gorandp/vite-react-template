@@ -90,19 +90,19 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
     // })
     .post("/update/:id", async (c) => {
         const productId = c.req.param("id");
-        const { 
-            name,
+        const {
+            // name,
             unit,
             primary_products,
             active,
             buy_price,
             sell_price,
-            stock,
+            // stock,
          } = await c.req.json();
-        if ( !name || !unit || !buy_price || !sell_price) {
+        if ( !unit || !buy_price || !sell_price) {
             return c.json(
-                { error: "name/unit/buy_price/sell_price are required",
-                  errorEs: "name/unit/buy_price/sell_price son requeridos" }, 400);
+                { error: "unit/buy_price/sell_price are required",
+                  errorEs: "unit/buy_price/sell_price son requeridos" }, 400);
         }
         const db = drizzle(c.env.DB);
         // check if product already exists
@@ -115,25 +115,24 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
                 { error: "Product does not exist",
                   errorEs: "El producto no existe" }, 400);
         }
-        const existingProductName = await db.select()
-            .from(products)
-            .where(eq(products.name, name));
-        if (existingProductName.length > 0 && existingProductName[0].id !== productId) {
-            // product already exists
-            return c.json(
-                { error: "Product name already used by other product",
-                  errorEs: "El nombre del producto ya está en uso por otro producto"
-                  }, 400);
-        }
+        // const existingProductName = await db.select()
+        //     .from(products)
+        //     .where(eq(products.name, name));
+        // if (existingProductName.length > 0 && existingProductName[0].id !== productId) {
+        //     // product already exists
+        //     return c.json(
+        //         { error: "Product name already used by other product",
+        //           errorEs: "El nombre del producto ya está en uso por otro producto"
+        //           }, 400);
+        // }
         // update product
         const product = {
-            name,
             unit,
             primary_products,
             active,
             buy_price,
             sell_price,
-            stock,
+            // stock,
         }
         const updatedProduct = await db.update(products)
             .set(product)
@@ -157,11 +156,15 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
                 }, 400);
         }
         // delete product
-        console.log(`Deleted: ${productId}`);
-        const deletedProduct = await db.delete(products)
+        // console.log(`Deleted: ${productId}`);
+        // const deletedProduct = await db.delete(products)
+        //     .where(eq(products.id, productId))
+        //     .returning().get();
+        const disabledProduct = await db.update(products)
+            .set({ active: 0 })
             .where(eq(products.id, productId))
             .returning().get();
-        return c.json(deletedProduct);
+        return c.json(disabledProduct);
     })
     .get("/:id", async (c) => {
         //validate it is a number

@@ -31,7 +31,7 @@ interface ProductInput {
   buy_price: number,
   sell_price: number,
   stock: number,
-  _active: boolean,
+  active: boolean,
 }
 const defaultProductInput: ProductInput = {
   id: "",
@@ -40,7 +40,7 @@ const defaultProductInput: ProductInput = {
   buy_price: 0,
   sell_price: 0,
   stock: 0,
-  _active: false,
+  active: false,
 }
 
 interface FormUpdateProductProps {
@@ -65,34 +65,32 @@ export const FormUpdateProduct = ({ updateProduct, product, setProductToUpdate }
   defaultProductInput.buy_price = product.buy_price
   defaultProductInput.sell_price = product.sell_price
   defaultProductInput.stock = product.stock
-  defaultProductInput._active = product.active
+  defaultProductInput.active = product.active
 
   // Create the form instance
   const form = useAppForm({
     defaultValues: defaultProductInput,
     validators: {
       // Pass a schema or function to validate
-      onChange: z.object({
-        id: z.string(),
-        name: z.string().min(1, "Name is required"),
-        unit: z.string().min(1, "Unit is required"),
-        buy_price: z.number().min(0, "Buy price must be positive"),
-        sell_price: z.number().min(0, "Sell price must be positive"),
-        stock: z.number().min(0, "Stock must be positive"),
-        _active: z.boolean(),
-      }),
+      onChange: (_: any) => {
+        // console.log(s)
+        z.object({
+          id: z.string(),
+          name: z.string().min(1, "Name is required"),
+          unit: z.string().min(1, "Unit is required"),
+          buy_price: z.number().min(0, "Buy price must be positive"),
+          sell_price: z.number().min(0, "Sell price must be positive"),
+          stock: z.number().min(0, "Stock must be positive"),
+          active: z.boolean(),
+        })
+      }
     },
     onSubmit: ({value}) => {
       // alert(JSON.stringify(value, null, 2))
       console.log("Updating product", value);
       updateProduct({
+        ...value,
         id: product.id,
-        name: value.name,
-        unit: value.unit,
-        buy_price: value.buy_price,
-        sell_price: value.sell_price,
-        stock: value.stock,
-        active: value._active,
         last_update: new Date().toISOString(),
       });
       // Reset the form after submission
@@ -131,6 +129,7 @@ export const FormUpdateProduct = ({ updateProduct, product, setProductToUpdate }
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
+              disabled={true}
               required />
           </label>
         }
@@ -204,7 +203,7 @@ export const FormUpdateProduct = ({ updateProduct, product, setProductToUpdate }
       <form.AppField
         name="stock"
         children={(field) =>
-          <label>Stock inicial: 
+          <label>Stock: 
             <field.Input
               className="mb-5"
               type="number"
@@ -212,19 +211,20 @@ export const FormUpdateProduct = ({ updateProduct, product, setProductToUpdate }
               value={field.state.value || ""}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(Number(e.target.value))}
+              disabled={true}
               required />
           </label>}
       />
       {/* The "name" property will throw a TypeScript error if typo"d  */}
       <form.AppField
-        name="_active"
+        name="active"
         children={(field) =>
           <label className="flex items-center gap-2 mb-5">
             <field.Checkbox
-              id="_active"
+              id="active"
               checked={field.state.value}
               onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange((e.target as HTMLInputElement).checked)}
+              onCheckedChange={(checked) => field.handleChange(Boolean(checked))}
               className="h-4 w-4"
               />
             Estado activo
