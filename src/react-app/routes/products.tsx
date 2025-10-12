@@ -6,7 +6,6 @@ import { FormUpdateProduct } from "@/components/FormUpdateProduct";
 import { Product } from "@/components/TableProductsColumns";
 import { TableProductsNew } from "@/components/TableProductsNew";
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 
 export const Route = createFileRoute('/products')({
   component: RouteComponent,
@@ -197,7 +196,6 @@ function RouteComponent() {
         </div>
         <p className="read-the-docs text-3xl font-bold underline">Click on the logos to learn more</p> */}
       </div>
-      <Footer />
     </div>
   )
 }
