@@ -44,7 +44,7 @@ export const users = sqliteTable('users', {
   name: text('name', {length: 64}).notNull(),
   email: text('email', {length: 128}).notNull().unique(),
   password_hash: text('password_hash', {length: 256}).notNull(),
-  role: text('role', {length: 32}).notNull().default('user'), // user, admin
+  roles: text('roles', {length: 32}).notNull().default('user'), // user, admin, salesman
   active: integer('active').notNull().default(1),
   created_at: text('created_at')
     .default(sql`CURRENT_TIMESTAMP`)
