@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { Env } from "./index";
 import { drizzle } from 'drizzle-orm/d1';
 import { eq } from 'drizzle-orm';
-import { products } from "./db/schema";
+import { products, products_price_history } from "./db/schema";
 
 
 export const productsRoute = new Hono<{ Bindings: Env }>()
@@ -59,6 +59,13 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
             profit_margin
         }
         const newProduct = await db.insert(products).values(product).returning().get();
+        // insert into price history
+        await db.insert(products_price_history).values({
+            product_id: newProduct.id,
+            buy_price: newProduct.buy_price,
+            sell_price: newProduct.sell_price,
+            profit_margin: newProduct.profit_margin
+        });
         return c.json(newProduct);
     })
     .post("/update/:id", async (c) => {

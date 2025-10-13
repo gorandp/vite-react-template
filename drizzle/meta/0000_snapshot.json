@@ -1,55 +1,9 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "2c2166fc-86b4-44c0-8d9e-dcf5f8632899",
+  "id": "7c5f43e4-9693-47bd-97bc-1f3dca758e53",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "p_products": {
-      "name": "p_products",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text(36)",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "name": {
-          "name": "name",
-          "type": "text(256)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "buy_price": {
-          "name": "buy_price",
-          "type": "real",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "unit": {
-          "name": "unit",
-          "type": "text(36)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "last_update": {
-          "name": "last_update",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "CURRENT_TIMESTAMP"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
     "products": {
       "name": "products",
       "columns": {
@@ -134,8 +88,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "sales": {
-      "name": "sales",
+    "products_price_history": {
+      "name": "products_price_history",
       "columns": {
         "id": {
           "name": "id",
@@ -144,20 +98,6 @@
           "notNull": true,
           "autoincrement": true
         },
-        "hash": {
-          "name": "hash",
-          "type": "text(36)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "customer_id": {
-          "name": "customer_id",
-          "type": "text(36)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "product_id": {
           "name": "product_id",
           "type": "text(36)",
@@ -165,22 +105,30 @@
           "notNull": true,
           "autoincrement": false
         },
-        "quantity": {
-          "name": "quantity",
+        "buy_price": {
+          "name": "buy_price",
           "type": "real",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "total_price": {
-          "name": "total_price",
+        "sell_price": {
+          "name": "sell_price",
           "type": "real",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "sale_date": {
-          "name": "sale_date",
+        "profit_margin": {
+          "name": "profit_margin",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "inserted_at": {
+          "name": "inserted_at",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -225,8 +173,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "role": {
-          "name": "role",
+        "roles": {
+          "name": "roles",
           "type": "text(32)",
           "primaryKey": false,
           "notNull": true,
