@@ -7,6 +7,7 @@ import { Product } from "@/components/TableProductsColumns";
 import { TableProductsNew } from "@/components/TableProductsNew";
 import { Header } from "@/components/Header";
 
+
 export const Route = createFileRoute('/products')({
   component: RouteComponent,
   beforeLoad: async ({ location }) => {

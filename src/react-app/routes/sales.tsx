@@ -1,6 +1,8 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { Header } from '@/components/Header'
 
+import { FormAddSale } from '@/components/FormAddSale'
+
 
 export const Route = createFileRoute('/sales')({
   component: RouteComponent,
@@ -25,6 +27,7 @@ function RouteComponent() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <h3>Hello "/sales"!</h3>
+      <FormAddSale addSale={(_) => {}} />
     </div>
   )
 }

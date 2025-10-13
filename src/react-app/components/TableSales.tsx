@@ -7,8 +7,8 @@ import React from "react";
 
 interface Props {
   sales: Sale[] | null;
-  deleteProduct: (id: number) => void;
-  setProductToUpdate: (sale: Sale | null) => void;
+  deleteSale: (id: number) => void;
+  setSaleToUpdate: (sale: Sale | null) => void;
 }
 
 
@@ -67,8 +67,8 @@ const exportToCSV = (data: Sale[], filename: string = 'ventas.csv') => {
   }
 };
 
-export const TableSalesNew: React.FC<Props> = ({ sales, deleteProduct, setProductToUpdate }) => {
-  const columns = getColumnsSales(deleteProduct, setProductToUpdate);
+export const TableSalesNew: React.FC<Props> = ({ sales, deleteSale, setSaleToUpdate }) => {
+  const columns = getColumnsSales(deleteSale, setSaleToUpdate);
 
   const handleExportCSV = () => {
     if (sales) {
