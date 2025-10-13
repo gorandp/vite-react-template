@@ -33,6 +33,7 @@ export const products_price_history = sqliteTable('products_price_history', {
   buy_price: real('buy_price').notNull(),
   sell_price: real('sell_price').notNull(),
   profit_margin: real('profit_margin').notNull().default(0),
+  user_id: text('user_id', {length: 36}),
   inserted_at: text('inserted_at')
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

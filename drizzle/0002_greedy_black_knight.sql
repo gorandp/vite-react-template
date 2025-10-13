@@ -1,0 +1,1 @@
+ALTER TABLE `products_price_history` ADD `user_id` text(36);

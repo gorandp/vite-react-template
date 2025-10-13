@@ -60,11 +60,14 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
         }
         const newProduct = await db.insert(products).values(product).returning().get();
         // insert into price history
+        const jwtPayload = await c.get("jwtPayload");
+        // console.log(`jwtPayload JWT: ${JSON.stringify(jwtPayload)}`);
         await db.insert(products_price_history).values({
             product_id: newProduct.id,
             buy_price: newProduct.buy_price,
             sell_price: newProduct.sell_price,
-            profit_margin: newProduct.profit_margin
+            profit_margin: newProduct.profit_margin,
+            user_id: jwtPayload.username,
         });
         return c.json(newProduct);
     })
@@ -119,6 +122,16 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
             .set(product)
             .where(eq(products.id, productId))
             .returning().get();
+        // insert into price history
+        const jwtPayload = await c.get("jwtPayload");
+        // console.log(`jwtPayload JWT: ${JSON.stringify(jwtPayload)}`);
+        await db.insert(products_price_history).values({
+            product_id: updatedProduct.id,
+            buy_price: updatedProduct.buy_price,
+            sell_price: updatedProduct.sell_price,
+            profit_margin: updatedProduct.profit_margin,
+            user_id: jwtPayload.username,
+        });
         return c.json(updatedProduct);
     })
     .post("/delete/:id", async (c) => {

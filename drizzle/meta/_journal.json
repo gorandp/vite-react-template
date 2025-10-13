@@ -15,6 +15,13 @@
       "when": 1760352561938,
       "tag": "0001_amusing_gambit",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1760363700229,
+      "tag": "0002_greedy_black_knight",
+      "breakpoints": true
     }
   ]
 }
