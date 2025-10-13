@@ -7,7 +7,7 @@ import React from "react";
 
 interface Props {
   sales: Sale[] | null;
-  deleteProduct: (id: string) => void;
+  deleteProduct: (id: number) => void;
   setProductToUpdate: (sale: Sale | null) => void;
 }
 
