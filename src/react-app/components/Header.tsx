@@ -17,17 +17,17 @@ const navButtonsClasses = (
 export const Header = () => {
     return (
       <header className='
-                    flex justify-between 
+                    flex flex-col sm:flex-row gap-3 sm:gap-1 justify-between 
                     items-center bg-background
                     dark:bg-background
                     mb-5 py-7 xl:px-40 md:px-17 sm:px-10 px-5
                     border-b-4 border-b-muted
                     '>
-        <div className="flex items-center mr-auto md:gap-7 gap-4">
+        <div className="flex items-center mx-auto md:ml-0 md:gap-7 gap-4">
           <img className="h-15" src={logoAGA} alt="Logo" />
           <h1 className='md:text-4xl text-3xl'>Productos AGA</h1>
         </div>
-        <div className="mr-0 ml-auto flex gap-3 sm:flex-row flex-col">
+        <div className="mx-auto md:mr-0 flex flex-row gap-1 sm:gap-3">
           <Link to="/" className={navButtonsClasses}>
             Inicio
           </Link>
