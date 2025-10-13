@@ -38,17 +38,23 @@ export const products_price_history = sqliteTable('products_price_history', {
     .notNull(),
 });
 
-// export const sales = sqliteTable('sales', {
-//   id: integer('id').primaryKey({ autoIncrement: true }),
-//   link_hash: text('hash', {length: 36}).notNull(),
-//   customer_id: text('customer_id', {length: 36}).notNull(),
-//   product_id: text('product_id', {length: 36}).notNull(),
-//   quantity: real('quantity').notNull(),
-//   total_price: real('total_price').notNull(),
-//   sale_date: text('sale_date')
-//     .default(sql`CURRENT_TIMESTAMP`)
-//     .notNull(),
-// })
+export const sales = sqliteTable('sales', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  link_hash: text('hash', {length: 36}).notNull(),
+  customer_id: text('customer_id', {length: 36}).notNull(),
+  combo_id: text('combo_id', {length: 36}),
+  combo_name: text('combo_name', {length: 256}),
+  product_id: text('product_id', {length: 36}).notNull(),
+  product_name: text('product_name', {length: 256}).notNull(),
+  product_unit: text('product_unit', {length: 36}).notNull(),
+  payment_method: text('payment_method', {length: 36}).notNull(),
+  product_unit_sell_price: real('product_unit_sell_price').notNull(),
+  quantity: real('quantity').notNull(),
+  total_amount: real('total_amount').notNull(),
+  sale_date: text('sale_date')
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+});
 
 export const users = sqliteTable('users', {
   id: text('id', {length: 36}).notNull().primaryKey(),
