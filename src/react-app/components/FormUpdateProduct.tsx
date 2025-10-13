@@ -143,6 +143,7 @@ export const FormUpdateProduct = ({ updateProduct, product, setProductToUpdate }
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
+              disabled={true}
               required />
           </label>
         }
@@ -155,7 +156,6 @@ export const FormUpdateProduct = ({ updateProduct, product, setProductToUpdate }
             <field.Input
               className="mb-5"
               type="number"
-              step="100"
               min="0"
               value={field.state.value || ""}
               onBlur={field.handleBlur}
@@ -171,7 +171,7 @@ export const FormUpdateProduct = ({ updateProduct, product, setProductToUpdate }
             <field.Input
               className="mb-5"
               type="number"
-              step="100"
+              step="10"
               min="0"
               value={field.state.value || ""}
               onBlur={field.handleBlur}

@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { Env } from "./index";
 import { drizzle } from 'drizzle-orm/d1';
-import { eq, sql } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { products } from "./db/schema";
 
 
@@ -27,8 +27,8 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
                 { error: "name/unit/buy_price/sell_price are required",
                   errorEs: "name/unit/buy_price/sell_price son requeridos" }, 400);
         }
-        console.log(`name: ${name}, unit: ${unit}, buy_price: ${buy_price}, sell_price: ${sell_price}`);
-        const productId = name.toLowerCase().slice(0, 36)
+        // console.log(`name: ${name}, unit: ${unit}, buy_price: ${buy_price}, sell_price: ${sell_price}`);
+        const productId = (name + " " + unit).toLowerCase().slice(0, 36)
                     .replaceAll(
                         RegExp(`[^a-zA-Z0-9]`, 'g'),
                         "_");
@@ -61,33 +61,6 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
         const newProduct = await db.insert(products).values(product).returning().get();
         return c.json(newProduct);
     })
-    // .post("/initTable", async (c) => {
-    //     const db = drizzle(c.env.DB);
-    //     // delete table if exists
-    //     const dropRes = await db.run(sql`DROP TABLE IF EXISTS products`);
-    //     // create table
-    //     const createRes = await db.run(
-    //         sql`CREATE TABLE IF NOT EXISTS products (
-                
-    //         )`
-    //     );
-    //     // create test data
-    //     const pop_products = [
-    //         { name: "Cerveza",
-    //           price: 4000.0, },
-    //         { name: "Vino",
-    //           price: 8000.0, },
-    //         { name: "Fernet",
-    //           price: 12000.0, },
-    //         { name: "Gancia",
-    //           price: 6000.0, },
-    //         { name: "Whisky",
-    //           price: 20000.0, },
-    //     ]
-    //     const data = await db.insert(products).values(pop_products).returning().get();
-    //     // console.log(data)
-    //     return c.json({dropRes, createRes, data});
-    // })
     .post("/update/:id", async (c) => {
         const productId = c.req.param("id");
         const {
