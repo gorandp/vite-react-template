@@ -12,7 +12,8 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as SalesImport } from './routes/sales'
-import { Route as DrinksImport } from './routes/drinks'
+import { Route as ProductsImport } from './routes/products'
+import { Route as LoginImport } from './routes/login'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -23,9 +24,15 @@ const SalesRoute = SalesImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DrinksRoute = DrinksImport.update({
-  id: '/drinks',
-  path: '/drinks',
+const ProductsRoute = ProductsImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,11 +53,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/drinks': {
-      id: '/drinks'
-      path: '/drinks'
-      fullPath: '/drinks'
-      preLoaderRoute: typeof DrinksImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsImport
       parentRoute: typeof rootRoute
     }
     '/sales': {
@@ -67,41 +81,46 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/drinks': typeof DrinksRoute
+  '/login': typeof LoginRoute
+  '/products': typeof ProductsRoute
   '/sales': typeof SalesRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/drinks': typeof DrinksRoute
+  '/login': typeof LoginRoute
+  '/products': typeof ProductsRoute
   '/sales': typeof SalesRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/drinks': typeof DrinksRoute
+  '/login': typeof LoginRoute
+  '/products': typeof ProductsRoute
   '/sales': typeof SalesRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/drinks' | '/sales'
+  fullPaths: '/' | '/login' | '/products' | '/sales'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/drinks' | '/sales'
-  id: '__root__' | '/' | '/drinks' | '/sales'
+  to: '/' | '/login' | '/products' | '/sales'
+  id: '__root__' | '/' | '/login' | '/products' | '/sales'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DrinksRoute: typeof DrinksRoute
+  LoginRoute: typeof LoginRoute
+  ProductsRoute: typeof ProductsRoute
   SalesRoute: typeof SalesRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DrinksRoute: DrinksRoute,
+  LoginRoute: LoginRoute,
+  ProductsRoute: ProductsRoute,
   SalesRoute: SalesRoute,
 }
 
@@ -116,15 +135,19 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/drinks",
+        "/login",
+        "/products",
         "/sales"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/drinks": {
-      "filePath": "drinks.tsx"
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/products": {
+      "filePath": "products.tsx"
     },
     "/sales": {
       "filePath": "sales.tsx"

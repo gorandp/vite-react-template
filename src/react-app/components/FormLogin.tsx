@@ -20,36 +20,33 @@ const { useAppForm } = createFormHook({
   formContext,
 })
 
-interface DrinkInput {
-  drink: string
-  price: number
+interface LoginInput {
+  username: string,
+  password: string,
 }
-const defaultDrinkInput: DrinkInput = {
-  drink: "",
-  price: 0,
-}
-
-interface FormAddDrinkProps {
-  addDrink: (drink: { name: string; price: number }) => void;
+const defaultLoginInput: LoginInput = {
+  username: "",
+  password: "",
 }
 
+interface FormLoginProps {
+  makeLogin: (credentials: LoginInput) => void;
+}
 
-export const FormAddDrink = ({ addDrink }: FormAddDrinkProps) => {
+
+export const FormLogin = ({ makeLogin }: FormLoginProps) => {
     const form = useAppForm({
-      defaultValues: defaultDrinkInput,
+      defaultValues: defaultLoginInput,
       validators: {
         // Pass a schema or function to validate
         onChange: z.object({
-          drink: z.string(),
-          price: z.number(),
+          username: z.string(),
+          password: z.string(),
         }),
       },
       onSubmit: ({value}) => {
         // alert(JSON.stringify(value, null, 2))
-        addDrink({
-          name: value.drink,
-          price: value.price,
-        });
+        makeLogin(value);
         // Reset the form after submission
         form.reset()
       },
@@ -64,47 +61,48 @@ export const FormAddDrink = ({ addDrink }: FormAddDrinkProps) => {
         >
           {/* <h1 className="mb-5 text-2xl font-headers decoration-dotted decoration-orange-500 underline decoration-3">Registrar Bebida</h1> */}
           <h1 className="mb-5 text-2xl font-roboto">
-            <span className="text-orange-500 font-extrabold">&gt;</span>
-          &nbsp;&nbsp;Registrar Bebida&nbsp;&nbsp;
-            <span className="text-orange-500 font-extrabold">&lt;</span>
+            <span className="text-primary font-extrabold mr-10 sm:mr-25">&gt;</span>
+          &nbsp;&nbsp;Iniciar Sesión&nbsp;&nbsp;
+            <span className="text-primary font-extrabold ml-10 sm:ml-25">&lt;</span>
           </h1>
           {/* Components are bound to `form` and `field` to ensure extreme type safety */}
           {/* Use `form.AppField` to render a component bound to a single field */}
           <form.AppField
-            name="drink"
-            children={(field) => 
-              <label>Nombre: 
+            name="username"
+            children={(field) =>
+              <label>
                 <field.Input
                   className="mb-5"
                   type="text"
-                  name="drink"
-                  id="drink"
+                  name="username"
+                  id="username"
+                  placeholder="Usuario"
                   value={field.state.value}
-                  onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(e.target.value)}
-                  required />
+                  required
+                  />
               </label>
             }
           />
-          {/* The "name" property will throw a TypeScript error if typo"d  */}
           <form.AppField
-            name="price"
+            name="password"
             children={(field) =>
-              <label>Precio unitario: 
+              <label>
                 <field.Input
                   className="mb-5"
-                  type="number"
-                  step="100"
-                  min="0"
-                  value={field.state.value || ""}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(Number(e.target.value))}
-                  required />
-              </label>}
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="Contraseña"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  required
+                  />
+              </label>
+            }
           />
-          {/* Components in `form.AppForm` have access to the form context */}
           <form.AppForm>
-            <form.Button className="mt-2">Agregar Bebida</form.Button>
+            <form.Button className="mt-2 w-full text-white">Enviar</form.Button>
           </form.AppForm>
         </form>
     )
