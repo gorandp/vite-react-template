@@ -133,6 +133,7 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
             buy_price,
             sell_price,
             // stock,
+            last_update: new Date().toISOString(),
         }
         const updatedProduct = await db.update(products)
             .set(product)

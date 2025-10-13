@@ -37,8 +37,7 @@ const getCallbackFetchProducts = (setProducts: (data: object) => void) => {
       if (res.status === 401) {
         // alert("Sesión expirada. Por favor, inicie sesión de nuevo.");
         localStorage.removeItem('JWT_TOKEN');
-        redirect({ to: '/login' });
-        return;
+        throw redirect({ to: '/login' });
       }
       return res.json();
     })
@@ -51,7 +50,6 @@ const getCallbackFetchProducts = (setProducts: (data: object) => void) => {
 const getCallbackAddProduct = (fetchProducts: () => void) => {
   return (product: {
       name: string,
-      price: number,
       unit: string,
       buy_price: number,
       sell_price: number,

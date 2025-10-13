@@ -11,7 +11,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { Pencil, Trash2 } from "lucide-react"
+import { Pencil, ArrowDown } from "lucide-react"
+
 
 export type Product = {
   id: string;
@@ -132,18 +133,18 @@ export const getColumnsProducts = (
             <Pencil />
           </Button>
 
+          {productData.active /* Only show delete if active */ && (
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive" size="icon">
-                <Trash2 />
+                <ArrowDown />
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Estás seguro?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Esta acción no se puede deshacer.
-                  Esto va a borrar permanentemente la bebida.
+                  Esto va a inhabilitar el producto.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -157,6 +158,7 @@ export const getColumnsProducts = (
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+          ) || <div className="w-8"></div> /* Placeholder to keep buttons aligned */}
         </div>
       )
     },
