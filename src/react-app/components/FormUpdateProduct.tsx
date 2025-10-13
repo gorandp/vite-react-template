@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Product } from "./TableProductsColumns"
 // We also support Valibot, ArkType, and any other standard schema library
-import { z } from "zod"
+// import { z } from "zod"
 
 
 const { fieldContext, formContext } = createFormHookContexts()
@@ -72,18 +72,14 @@ export const FormUpdateProduct = ({ updateProduct, product, setProductToUpdate }
     defaultValues: defaultProductInput,
     validators: {
       // Pass a schema or function to validate
-      onChange: (_: any) => {
-        // console.log(s)
-        z.object({
-          id: z.string(),
+      onChange: (_) => {} /*z.object({
           name: z.string().min(1, "Name is required"),
           unit: z.string().min(1, "Unit is required"),
           buy_price: z.number().min(0, "Buy price must be positive"),
           sell_price: z.number().min(0, "Sell price must be positive"),
           stock: z.number().min(0, "Stock must be positive"),
           active: z.boolean(),
-        })
-      }
+        })*/
     },
     onSubmit: ({value}) => {
       // alert(JSON.stringify(value, null, 2))
