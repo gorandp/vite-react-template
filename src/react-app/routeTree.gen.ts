@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as SalesImport } from './routes/sales'
+import { Route as ProductsshareImport } from './routes/products_share'
 import { Route as ProductsImport } from './routes/products'
 import { Route as LoginImport } from './routes/login'
 import { Route as IndexImport } from './routes/index'
@@ -21,6 +22,12 @@ import { Route as IndexImport } from './routes/index'
 const SalesRoute = SalesImport.update({
   id: '/sales',
   path: '/sales',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProductsshareRoute = ProductsshareImport.update({
+  id: '/products_share',
+  path: '/products_share',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -67,6 +74,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsImport
       parentRoute: typeof rootRoute
     }
+    '/products_share': {
+      id: '/products_share'
+      path: '/products_share'
+      fullPath: '/products_share'
+      preLoaderRoute: typeof ProductsshareImport
+      parentRoute: typeof rootRoute
+    }
     '/sales': {
       id: '/sales'
       path: '/sales'
@@ -83,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
+  '/products_share': typeof ProductsshareRoute
   '/sales': typeof SalesRoute
 }
 
@@ -90,6 +105,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
+  '/products_share': typeof ProductsshareRoute
   '/sales': typeof SalesRoute
 }
 
@@ -98,15 +114,16 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
+  '/products_share': typeof ProductsshareRoute
   '/sales': typeof SalesRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/products' | '/sales'
+  fullPaths: '/' | '/login' | '/products' | '/products_share' | '/sales'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/products' | '/sales'
-  id: '__root__' | '/' | '/login' | '/products' | '/sales'
+  to: '/' | '/login' | '/products' | '/products_share' | '/sales'
+  id: '__root__' | '/' | '/login' | '/products' | '/products_share' | '/sales'
   fileRoutesById: FileRoutesById
 }
 
@@ -114,6 +131,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   ProductsRoute: typeof ProductsRoute
+  ProductsshareRoute: typeof ProductsshareRoute
   SalesRoute: typeof SalesRoute
 }
 
@@ -121,6 +139,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   ProductsRoute: ProductsRoute,
+  ProductsshareRoute: ProductsshareRoute,
   SalesRoute: SalesRoute,
 }
 
@@ -137,6 +156,7 @@ export const routeTree = rootRoute
         "/",
         "/login",
         "/products",
+        "/products_share",
         "/sales"
       ]
     },
@@ -148,6 +168,9 @@ export const routeTree = rootRoute
     },
     "/products": {
       "filePath": "products.tsx"
+    },
+    "/products_share": {
+      "filePath": "products_share.tsx"
     },
     "/sales": {
       "filePath": "sales.tsx"
