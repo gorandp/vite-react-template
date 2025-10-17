@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { Env } from "./index";
 import { drizzle } from 'drizzle-orm/d1';
-import { eq } from 'drizzle-orm';
+// import { eq } from 'drizzle-orm';
 import { sales } from "./db/schema";
 
 
