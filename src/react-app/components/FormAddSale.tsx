@@ -53,7 +53,7 @@ export const FormAddSale = ({ addSale }: FormAddSaleProps) => {
     defaultValues: defaultSaleInput,
     validators: {
       // Pass a schema or function to validate
-      onChange: z.object({
+      onChange: (_) => { }, /*z.object({
         payment_method: z.string().min(1, "Payment method is required"),
         sale_blocks: z.array(z.object({
           combo_id: z.string().nullable(),
@@ -61,10 +61,11 @@ export const FormAddSale = ({ addSale }: FormAddSaleProps) => {
           quantity: z.number().min(1, "Quantity must be at least 1"),
         })).min(1, "At least one sale block is required"),
         sale_date: z.string().min(1, "Sale date is required"),
-      }),
+      })*/
     },
     onSubmit: ({value}) => {
       // alert(JSON.stringify(value, null, 2))
+      alert(JSON.stringify(value, null, 2))
       addSale(value);
       // Reset the form after submission
       form.reset()
@@ -91,54 +92,34 @@ export const FormAddSale = ({ addSale }: FormAddSaleProps) => {
         {(field) => (
           <div>
             {field.state.value.map((_, i) => {
-              <form.Field key={i} name={`sale_block[${i}].combo_id`}>
-                {(subField) => (
-                  <form.Input
-                    value={subField.state.value}
-                    onChange={(e) => subField.handleChange(e.target.value)}
-                  />
-                )}
-              </form.Field>
+              return (
+                <form.AppField
+                  key={i}
+                  name={`sale_blocks[${i}].combo_id`}
+                  children={(subField) =>
+                    <label>Combo ID (opcional):
+                      <subField.Input
+                        value={subField.state.value || ""}
+                        onChange={(e) => subField.handleChange(e.target.value)}
+                      />
+                    </label>}
+                />
+              )
             })}
-            <Button className="mt-2 ml-2" variant={"outline"} onClick={() => field.pushValue({ combo_id: null, product_id: '', quantity: 0 })} >Agregar Producto</Button>
+            {/* this button must not submit the form */}
+            <Button
+              type="button"
+              className="mt-2 ml-2"
+              variant={"outline"}
+              onClick={() => field.pushValue({ combo_id: null, product_id: '', quantity: 0 })}
+            >
+              Agregar Producto
+            </Button>
           </div>
         )}
       </form.Field>
-      <form.AppField
-        name="id"
-        children={(field) =>
-          <label>ID: 
-            <field.Input
-              className="mb-5"
-              type="text"
-              name="name"
-              id="name"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
-              required />
-          </label>
-        }
-      />
-      {/* Use `form.AppField` to render a component bound to a single field */}
-      <form.AppField
-        name="unit"
-        children={(field) => 
-          <label>Unidad: 
-            <field.Input
-              className="mb-5"
-              type="text"
-              name="unit"
-              id="unit"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
-              required />
-          </label>
-        }
-      />
-      {/* The "name" property will throw a TypeScript error if typo"d  */}
-      <form.AppField
+
+      {/* <form.AppField
         name="buy_price"
         children={(field) =>
           <label>Precio unitario de compra: 
@@ -152,7 +133,6 @@ export const FormAddSale = ({ addSale }: FormAddSaleProps) => {
               required />
           </label>}
       />
-      {/* The "name" property will throw a TypeScript error if typo"d  */}
       <form.AppField
         name="sell_price"
         children={(field) =>
@@ -167,7 +147,7 @@ export const FormAddSale = ({ addSale }: FormAddSaleProps) => {
               onChange={(e) => field.handleChange(Number(e.target.value))}
               required />
           </label>}
-      />
+      /> */}
       <form.AppForm>
         <form.Button className="mt-2 text-white">Enviar</form.Button>
       </form.AppForm>
