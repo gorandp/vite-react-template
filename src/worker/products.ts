@@ -115,6 +115,7 @@ export const productsRoute = new Hono<{ Bindings: Env }>()
             active,
             buy_price,
             sell_price,
+            profit_margin: (sell_price / buy_price) - 1,
             // stock,
             last_update: new Date().toISOString(),
         }

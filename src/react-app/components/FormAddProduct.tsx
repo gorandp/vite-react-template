@@ -1,9 +1,10 @@
-import { createFormHook, createFormHookContexts } from "@tanstack/react-form"
+import { createFormHook, createFormHookContexts, useStore } from "@tanstack/react-form"
 // Form components that pre-bind events from the form hook; check our "Form Composition" guide for more
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 // We also support Valibot, ArkType, and any other standard schema library
 import { z } from "zod"
+import React from "react"
 
 const { fieldContext, formContext } = createFormHookContexts()
 
@@ -25,6 +26,7 @@ interface ProductInput {
   unit: string
   buy_price: number
   sell_price: number
+  profit_margin: number
   stock: number
 }
 const defaultProductInput: ProductInput = {
@@ -32,6 +34,7 @@ const defaultProductInput: ProductInput = {
   unit: "",
   buy_price: 0,
   sell_price: 0,
+  profit_margin: 0,
   stock: 0,
 }
 
@@ -39,9 +42,11 @@ interface FormAddProductProps {
   addProduct: (product: {
     name: string;
     unit: string;
-    stock: number;
     buy_price: number;
-    sell_price: number }) => void;
+    sell_price: number;
+    profit_margin: number;
+    stock: number;
+  }) => void;
 }
 
 
@@ -55,16 +60,38 @@ export const FormAddProduct = ({ addProduct }: FormAddProductProps) => {
         unit: z.string().min(1, "Unit is required"),
         buy_price: z.number().min(0, "Buy price must be positive"),
         sell_price: z.number().min(0, "Sell price must be positive"),
+        profit_margin: z.number().min(0, "Profit margin must be positive"),
         stock: z.number().min(0, "Stock must be positive"),
       }),
     },
     onSubmit: ({value}) => {
       // alert(JSON.stringify(value, null, 2))
-      addProduct(value);
+      addProduct({...value, profit_margin: value.profit_margin / 100});
       // Reset the form after submission
       form.reset()
     },
   })
+  const buyPrice = useStore(form.store, (state) => state.values.buy_price)
+  const sellPrice = useStore(form.store, (state) => state.values.sell_price)
+  const profitMargin = useStore(form.store, (state) => state.values.profit_margin)
+
+  React.useEffect(() => {
+    // Update sell_price when buy_price or profit_margin changes
+    if (buyPrice && profitMargin) {
+      const newSellPrice = buyPrice * (1 + (profitMargin / 100));
+      form.state.values.sell_price = parseInt(newSellPrice.toFixed(0));
+      // form.setValue("sell_price", parseFloat(newSellPrice.toFixed(2)));
+    }
+  }, [buyPrice, profitMargin]);
+
+  React.useEffect(() => {
+    // Update profit_margin when sell_price changes
+    if (buyPrice && sellPrice) {
+      const newProfitMargin = ((sellPrice / buyPrice) - 1) * 100;
+      form.state.values.profit_margin = parseFloat(newProfitMargin.toFixed(2));
+      // form.setValue("profit_margin", parseFloat(newProfitMargin.toFixed(2)));
+    }
+  }, [sellPrice]);
 
   return (
     <form
@@ -138,6 +165,22 @@ export const FormAddProduct = ({ addProduct }: FormAddProductProps) => {
               className="mb-5"
               type="number"
               step="10"
+              min="0"
+              value={field.state.value || ""}
+              onBlur={field.handleBlur}
+              onChange={(e) => field.handleChange(Number(e.target.value))}
+              required />
+          </label>}
+      />
+      {/* The "name" property will throw a TypeScript error if typo"d  */}
+      <form.AppField
+        name="profit_margin"
+        children={(field) =>
+          <label>Margen de ganancia: 
+            <field.Input
+              className="mb-5"
+              type="number"
+              step="0.01"
               min="0"
               value={field.state.value || ""}
               onBlur={field.handleBlur}
