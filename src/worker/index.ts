@@ -5,9 +5,10 @@ import { cors } from "hono/cors";
 // import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core';
 // import { sql } from 'drizzle-orm';
 // import { handleRest } from './rest';
+import { authRoute } from "./auth";
 import { usersRoute } from "./users";
 import { productsRoute } from "./products";
-import { authRoute } from "./auth";
+import { salesRoute } from "./sales";
 import { jwt } from 'hono/jwt'
 import type { JwtVariables } from 'hono/jwt'
 
@@ -44,6 +45,7 @@ export default {
         app.route('/api/auth', authRoute);
         app.route('/api/users', usersRoute);
         app.route('/api/products', productsRoute);
+        app.route('/api/sales', salesRoute);
 
         return app.fetch(request, env, ctx);
     }

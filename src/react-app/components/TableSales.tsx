@@ -67,7 +67,7 @@ const exportToCSV = (data: Sale[], filename: string = 'ventas.csv') => {
   }
 };
 
-export const TableSalesNew: React.FC<Props> = ({ sales, deleteSale, setSaleToUpdate }) => {
+export const TableSales: React.FC<Props> = ({ sales, deleteSale, setSaleToUpdate }) => {
   const columns = getColumnsSales(deleteSale, setSaleToUpdate);
 
   const handleExportCSV = () => {

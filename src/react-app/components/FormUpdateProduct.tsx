@@ -136,7 +136,7 @@ export const FormUpdateProduct = ({ updateProduct, product, setProductToUpdate }
     >
       <h1 className="mb-5 text-2xl font-roboto">
         <span className="text-primary font-extrabold">&gt;</span>
-      &nbsp;&nbsp;Actualizar Bebida&nbsp;&nbsp;
+      &nbsp;&nbsp;Actualizar Producto&nbsp;&nbsp;
         <span className="text-primary font-extrabold">&lt;</span>
       </h1>
       {/* Components are bound to `form` and `field` to ensure extreme type safety */}
