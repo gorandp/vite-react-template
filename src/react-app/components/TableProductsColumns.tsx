@@ -21,6 +21,7 @@ export type Product = {
   active: boolean;
   buy_price: number;
   sell_price: number;
+  profit_margin: number;
   stock: number;
   last_update: string;
 }
